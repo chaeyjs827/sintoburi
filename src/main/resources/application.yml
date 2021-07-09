@@ -1,0 +1,52 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  mvc:
+    view:
+      prefix: /templates
+      suffix: .html
+  datasource:
+    url: jdbc:h2:mem:legacydb;MODE=MySQL
+    platform: h2
+    username: test
+    password: test
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # jpa
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  
+  #devtool      
+  devtools:
+    livereload:
+      enabled: true
+      
+  #mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email.properties.username}
+    password: ${email.properties.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
