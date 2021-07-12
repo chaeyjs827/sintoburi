@@ -50,3 +50,11 @@ spring:
           auth: true
           starttls:
             enable: true
+
+#security:
+#  basic:
+#    enable : false
+#    
+#management:
+#  security:
+#    enabled: false  
