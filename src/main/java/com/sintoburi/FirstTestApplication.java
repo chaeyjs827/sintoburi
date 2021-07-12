@@ -1,4 +1,4 @@
-package com.legacy;
+package com.sintoburi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
