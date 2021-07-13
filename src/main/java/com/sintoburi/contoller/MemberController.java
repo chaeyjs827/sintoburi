@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.service.MemberService;
 
-@RestController(value = "/api")
+@RestController
 public class MemberController {
 
 	@Autowired
@@ -19,6 +19,7 @@ public class MemberController {
 	@GetMapping("/member-by-username")
 	@ResponseBody
 	public Optional<MemberEntity> getMemberByUsername(String username) {
+		username = "1";
 		return memberService.getMemberByUsername(username);
 	}
 	
