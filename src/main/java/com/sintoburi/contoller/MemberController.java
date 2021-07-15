@@ -21,8 +21,13 @@ public class MemberController {
 	
 	@GetMapping("/test")
 	@ResponseBody
-	public Optional<MemberEntity> getMemberByUsername(@RequestParam String username) {
-		return memberService.getMemberByUsername(username);
+	public String getMemberByUsername(@RequestParam String username) {
+		return "hello";
 	}
+//	@GetMapping("/test")
+//	@ResponseBody
+//	public Optional<MemberEntity> getMemberByUsername(@RequestParam String username) {
+//		return memberService.getMemberByUsername(username);
+//	}
 	
 }
