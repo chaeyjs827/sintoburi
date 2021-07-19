@@ -1,6 +1,16 @@
 package com.sintoburi.util;
 
+import java.security.Key;
+import java.util.Date;
+
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+
 import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 /*
  * 1. 로그인	-> Access-Token
@@ -21,4 +31,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class UtilJwt {
 
+	private static final String SECRET_KEY = "test_secret_key";
+	
+	public String createToken(String tokenName, long expTime) {
+		if(expTime <= 0) {
+			throw new RuntimeException("Expired time must be greater than 0");
+		}
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;	// 토큰 암호화 알고리즘
+		
+		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);	// Binary Data를 Text로 바꿈
+		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());	// 암호화된 key
+		
+		return Jwts.builder()
+				.setSubject(tokenName)
+				.signWith(signingKey, signatureAlgorithm)
+				.setExpiration(new Date(System.currentTimeMillis()+expTime))
+				.compact();
+	}
+	
+	public String authenticate(String token) {
+		Claims claims = Jwts.parserBuilder()
+				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+		return claims.getSubject();
+	}
+	
 }
