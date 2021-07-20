@@ -31,7 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class UtilJwt {
 
-	private static final String SECRET_KEY = "test_secret_key";
+	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 	
 	public String createToken(String tokenName, long expTime) {
 		if(expTime <= 0) {
@@ -49,13 +49,22 @@ public class UtilJwt {
 				.compact();
 	}
 	
-	public String authenticate(String token) {
+	public String authenticateByToken(String token) {
 		Claims claims = Jwts.parserBuilder()
 				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
 		return claims.getSubject();
+	}
+	
+	public Claims getClaimsByToken(String token) {
+		Claims claims = Jwts.parserBuilder()
+				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+		return claims;
 	}
 	
 }

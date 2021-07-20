@@ -1,12 +1,18 @@
 package com.sintoburi.contoller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sintoburi.util.UtilJwt;
+
+import io.jsonwebtoken.Claims;
 
 /*
  * 차후 OAuth 인증 관련 내용은 이부분에서 처리해야 함.
@@ -22,14 +28,27 @@ public class OAuthController {
 	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody
-	public void oauthLogin() {
+	public Map<String, String> oauthLogin() {
 		String accessToken = utilJwt.createToken("accessToken", 10000);
 		String refreshToken = utilJwt.createToken("refreshToken", 200000);
 		
-		System.out.println("accessToken : " + accessToken);
-		System.out.println("refreshToken : " + refreshToken);
-		System.out.println("hahah");
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("access-token", accessToken);
+		result.put("refresh-token", refreshToken);
+		return result;
 	}
 	
+	@GetMapping(value = "/oauth/authenticate")
+	@ResponseBody
+	public String oauthAuthenticate(@RequestParam String token) {
+		String result = utilJwt.authenticateByToken(token);
+		return result;
+	}
 	
+	@GetMapping(value = "/oauth/getClaimsByToken")
+	@ResponseBody
+	public Claims getClaimsByToken(@RequestParam String token) {
+		Claims result = utilJwt.getClaimsByToken(token);
+		return result;
+	}
 }
