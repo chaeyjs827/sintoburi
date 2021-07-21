@@ -18,7 +18,7 @@ public class MailService {
 	public void sendMail(MailDto mailDto) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo("chaeyjs827@gmail.com");
-		message.setFrom("chrisnorsamn@gmail.com");	// 생략 가능(생략하면 자동으로 application.yml의 username으로 셋팅됨)
+//		message.setFrom("chrisnorsamn@gmail.com");	// 생략 가능(생략하면 자동으로 application.yml의 username으로 셋팅됨)
 		message.setSubject("subject");
 		message.setText("set text");
 		/*
