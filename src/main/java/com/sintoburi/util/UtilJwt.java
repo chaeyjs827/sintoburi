@@ -13,12 +13,23 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 /*
+ * Jwt 토큰의 라이프 사이클
+ * Jwt, Access-Token, Refresh-Token 모두 만료 시간이 필요하다.
+ * 토큰의 구조는 아래와 같이 구현할것
+ * - Jwt
+ *  	- at(access-token)
+ *  	- rt(refresh-token)
+ *  	- username
+ *  	- ct(created-time)
+ *  	- iat(issued-at-time)
+ *  	- exp(expired)
+ * 
  * 1. 로그인	-> Access-Token
  * 			-> Refresh-Token(DB에 저장)
  * 			두개 모두 쿠키게 저장됨
  * 
  * 2. API 요청을 하면 토큰의 유효성 검사를 하는 미들웨어가 필요함
- * 		case1 : access-token(만료), refresh-token(만료) => 에러
+ * 		case1 : access-token(만료), refresh-token(만료) => 에러->로그인 다시해야함
  * 		case2 : access-token(유효), refresh-token(만료) => refresh-token 재발급
  * 		case3 :	access-token(만료), refresh-token(유효) => access-token 재발급
  * 		case4 : access-token(만료), refresh-token(만료) => 다음 로직 실행
