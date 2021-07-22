@@ -2,6 +2,7 @@ package com.sintoburi.util;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -9,6 +10,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -54,6 +56,7 @@ public class UtilJwt {
 		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());	// 암호화된 key
 		
 		return Jwts.builder()
+				.setHeaderParam("type", "jwt")
 				.setSubject(tokenName)
 				.signWith(signingKey, signatureAlgorithm)
 				.setExpiration(new Date(System.currentTimeMillis()+expTime))

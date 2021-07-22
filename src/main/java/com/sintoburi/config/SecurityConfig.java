@@ -18,6 +18,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	http.authorizeRequests()
 	    	.antMatchers("/**").permitAll()
 		    .antMatchers("/h2-console/**").permitAll()
+		.and()
+			.formLogin()
+//		    .loginPage("/user/login")
+//		    .defaultSuccessUrl("/user/login/result")
+//		    .permitAll()
 	    .and()
 		// h2-console 페이지 처리
 			.csrf().disable()
