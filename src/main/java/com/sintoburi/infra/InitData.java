@@ -29,7 +29,11 @@ public class InitData {
     		List<MemberEntity> memberList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
     				.stream().skip(1).map(line -> {
     					String[] split = line.split(",");
-    					return MemberEntity.builder().id(Long.parseLong(split[0])).username(split[1]).password(split[2]).build();
+    					return MemberEntity.builder()
+    							.id(Long.parseLong(split[0]))
+    							.username(split[1])
+    							.email(split[2])
+    							.password(split[3]).build();
     				}).collect(Collectors.toList());
     		memberRepository.saveAll(memberList);
     	}

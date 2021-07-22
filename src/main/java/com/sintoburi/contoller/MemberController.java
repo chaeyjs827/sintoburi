@@ -1,15 +1,14 @@
 package com.sintoburi.contoller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sintoburi.entity.MemberEntity;
+import com.sintoburi.dto.MemberDto;
 import com.sintoburi.service.MemberService;
 
 @RestController
@@ -19,14 +18,16 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@GetMapping("/test")
+	@GetMapping("/member/signup")
 	@ResponseBody
-	public String getMemberByUsername(@RequestParam String username) {
+	public String userSignup(MemberDto memberDto) {
+		memberService.userSignup(memberDto);
 		return "hello";
 	}
-//	@GetMapping("/test")
+	
+//	@GetMapping("/login")
 //	@ResponseBody
-//	public Optional<MemberEntity> getMemberByUsername(@RequestParam String username) {
+//	public Optional<MemberEntity> apiLogin(@RequestParam String username) {
 //		return memberService.getMemberByUsername(username);
 //	}
 	
