@@ -26,9 +26,9 @@ public class MemberService {
 		return memberRepository.save(memberDto.toEntity()).getId();
 	}
 	
-//	@Transactional
-//	public Optional<MemberEntity> getMemberByUsername(String username) {
-//		return memberRepository.findByUsername(username);
-//	}
+	@Transactional
+	public Optional<MemberEntity> getMemberByUsername(String username) {
+		return memberRepository.findByUsername(username);
+	}
 	
 }
