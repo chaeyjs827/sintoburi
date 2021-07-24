@@ -19,8 +19,8 @@ public class MemberDto {
     private String username;
     private String email;
     private String password;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+//    private LocalDateTime createdDate;
+//    private LocalDateTime modifiedDate;
     
     public MemberEntity toEntity() {
     	return MemberEntity.builder()

@@ -40,4 +40,8 @@ public class MemberTest {
 		System.out.println("result content : " + content);
 	}
 	
+//	@Test
+//	void apiMemberById() throws Exception {
+//		MvcResult result = mockMvc.perform(get("/api/"))
+//	}
 }

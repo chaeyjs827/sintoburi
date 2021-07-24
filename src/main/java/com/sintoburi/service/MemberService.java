@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,10 @@ import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.repository.MemberRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class MemberService {
 
 	private MemberRepository memberRepository;
@@ -21,9 +25,16 @@ public class MemberService {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 		
-//		memberRepository.save(memberDto.toEntity());
-//		return null;
-		return memberRepository.save(memberDto.toEntity()).getId();
+		try {
+			memberRepository.save(memberDto.toEntity());
+//			return 1L;
+			
+		} catch(DataAccessException ex) {
+			System.out.println(ex.getCause().getMessage());
+		}
+		return 1L;
+		
+//		return memberRepository.save(memberDto.toEntity()).getId();
 	}
 	
 	@Transactional
@@ -31,4 +42,7 @@ public class MemberService {
 		return memberRepository.findByUsername(username);
 	}
 	
+	public Optional<MemberEntity> getMemberById(MemberDto memberDto) {
+		return memberRepository.findById(memberDto.getId());
+	}
 }

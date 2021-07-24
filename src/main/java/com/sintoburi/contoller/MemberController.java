@@ -14,7 +14,10 @@ import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.service.MemberService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api")
 public class MemberController {
 
@@ -26,6 +29,13 @@ public class MemberController {
 	public String userSignup(MemberDto memberDto) {
 		memberService.userSignup(memberDto);
 		return "hello";
+	}
+	
+	@GetMapping("/member/findById")
+	@ResponseBody
+	public Optional<MemberEntity> getMemberById(MemberDto memberDto) {
+		Optional<MemberEntity> result = memberService.getMemberById(memberDto);
+		return result;
 	}
 	
 	@PostMapping("/member/login")
