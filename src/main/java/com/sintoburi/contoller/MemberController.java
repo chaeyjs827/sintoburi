@@ -33,8 +33,8 @@ public class MemberController {
 	
 	@GetMapping("/member/findById")
 	@ResponseBody
-	public Optional<MemberEntity> getMemberById(MemberDto memberDto) {
-		Optional<MemberEntity> result = memberService.getMemberById(memberDto);
+	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
+		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
 	}
 	

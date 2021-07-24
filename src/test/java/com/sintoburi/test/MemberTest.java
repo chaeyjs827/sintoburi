@@ -17,10 +17,6 @@ public class MemberTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	/*
-	 * 2021-07-23 /api/member/signup 현재 에러 나는중...
-	 * h2 의 메카니즘을 이해 하지 못하는 상황 같음..
-	 */
 	@Test
 	void apiMemberSignupTest() throws Exception {
 		MvcResult result = mockMvc.perform(get("/api/member/signup")
@@ -40,8 +36,12 @@ public class MemberTest {
 		System.out.println("result content : " + content);
 	}
 	
-//	@Test
-//	void apiMemberById() throws Exception {
-//		MvcResult result = mockMvc.perform(get("/api/"))
-//	}
+	@Test
+	void apiMemberById() throws Exception {
+		MvcResult result = mockMvc.perform(get("/api/member/findById")
+							.param("id", "1"))
+					.andReturn();
+		String content = result.getResponse().getContentAsString();
+		System.out.println("result content : " + content);
+	}
 }

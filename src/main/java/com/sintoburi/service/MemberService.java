@@ -42,7 +42,7 @@ public class MemberService {
 		return memberRepository.findByUsername(username);
 	}
 	
-	public Optional<MemberEntity> getMemberById(MemberDto memberDto) {
-		return memberRepository.findById(memberDto.getId());
+	public Optional<MemberEntity> getMemberById(Long id) {
+		return memberRepository.findById(id);
 	}
 }
