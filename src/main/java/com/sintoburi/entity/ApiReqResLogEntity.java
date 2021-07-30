@@ -50,9 +50,11 @@ public class ApiReqResLogEntity {
 	@Column(length = 10, nullable = false)
 	private String responseCode;
 	
-	private Date createdDate;
-	
-	private Date updatedDate;
+//	@Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+//	private Date createdDate;
+//	
+//	@Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+//	private Date updatedDate;
 	
 	@Builder
 	public ApiReqResLogEntity(Long id, String apiName, String apiMethodName,
