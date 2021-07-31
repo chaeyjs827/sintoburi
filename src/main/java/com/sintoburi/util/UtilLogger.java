@@ -20,7 +20,7 @@ public class UtilLogger {
 		try {
 			apiReqResLogRepository.save(apiReqResLogDto.toEntity());
 		} catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	

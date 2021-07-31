@@ -47,8 +47,15 @@ public class MemberService {
 	}
 	
 	public Optional<MemberEntity> getMemberById(Long id) {
-		ApiReqResLogDto apiReqResLogDto = new ApiReqResLogDto(null, "water", "water",
-				"water", "water", "water", "water", "water");
+		ApiReqResLogDto 		apiReqResLogDto = ApiReqResLogDto.builder()
+				.apiMethodName("test")
+				.apiName("test")
+				.requestType("test")
+				.requestUrl("test")
+				.requestBody("test")
+				.responseResult("test")
+				.responseCode("test")
+				.build();
 		utilLogger.log(apiReqResLogDto);
 		return memberRepository.findById(id);
 	}
