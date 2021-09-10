@@ -26,6 +26,7 @@ public class RedisTest {
 		final ValueOperations<String, String> str = redisTemplate.opsForValue();
 		
 		str.set(key, "1");
-	
+		final String result = str.get(key);
+		System.out.println("result : " + result);
 	}
 }
