@@ -28,7 +28,7 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -50,7 +50,10 @@ spring:
           auth: true
           starttls:
             enable: true
-
+#  #redis
+#  redis:
+#    host:localhost
+#    port:6379
 #security:
 #  basic:
 #    enable : false

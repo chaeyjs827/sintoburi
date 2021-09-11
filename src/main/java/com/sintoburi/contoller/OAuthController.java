@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sintoburi.util.UtilJwt;
+import com.sintoburi.util.UtilRedis;
 
 import io.jsonwebtoken.Claims;
 
@@ -26,15 +27,22 @@ public class OAuthController {
 	@Autowired
 	private UtilJwt utilJwt;
 	
+	@Autowired
+	private UtilRedis utilRedis;
+	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody
 	public Map<String, String> oauthLogin() {
 		String accessToken = utilJwt.createToken("accessToken", 10000);
 		String refreshToken = utilJwt.createToken("refreshToken", 200000);
+//		String getAccessToken = utilRedis.getToken("accessToken");
+//		String getRefreshToken = utilRedis.getToken("refreshToken");
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("access-token", accessToken);
 		result.put("refresh-token", refreshToken);
+//		result.put("get-access-token", getAccessToken);
+//		result.put("get-refresh-token", getRefreshToken);
 		return result;
 	}
 	

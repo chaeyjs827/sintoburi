@@ -8,9 +8,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sintoburi.dto.ApiReqResLogDto;
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.repository.MemberRepository;
+import com.sintoburi.util.UtilLogger;
 
 import lombok.AllArgsConstructor;
 
@@ -19,6 +21,8 @@ import lombok.AllArgsConstructor;
 public class MemberService {
 
 	private MemberRepository memberRepository;
+	
+	private UtilLogger utilLogger;
 	
 	@Transactional 
 	public Long userSignup(MemberDto memberDto) {
@@ -43,6 +47,16 @@ public class MemberService {
 	}
 	
 	public Optional<MemberEntity> getMemberById(Long id) {
+		ApiReqResLogDto 		apiReqResLogDto = ApiReqResLogDto.builder()
+				.apiMethodName("test")
+				.apiName("test")
+				.requestType("test")
+				.requestUrl("test")
+				.requestBody("test")
+				.responseResult("test")
+				.responseCode("test")
+				.build();
+		utilLogger.log(apiReqResLogDto);
 		return memberRepository.findById(id);
 	}
 }
