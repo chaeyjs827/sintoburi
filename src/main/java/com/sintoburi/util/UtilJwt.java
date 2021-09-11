@@ -2,15 +2,16 @@ package com.sintoburi.util;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -41,12 +42,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * 4. 발급된 토큰을 request-header에 담아 API 요청을 하면 됨;
  */
 
+
 @Component
 public class UtilJwt {
-
-	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 	
+	@Autowired
+	private UtilRedis utilRedis;
+	
+	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 	public String createToken(String tokenName, long expTime) {
+	
 		if(expTime <= 0) {
 			throw new RuntimeException("Expired time must be greater than 0");
 		}
@@ -55,12 +60,17 @@ public class UtilJwt {
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);	// Binary Data를 Text로 바꿈
 		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());	// 암호화된 key
 		
-		return Jwts.builder()
+		String jwt = Jwts.builder()
 				.setHeaderParam("type", "jwt")
 				.setSubject(tokenName)
 				.signWith(signingKey, signatureAlgorithm)
 				.setExpiration(new Date(System.currentTimeMillis()+expTime))
 				.compact();
+
+		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
+//		utilRedis.setToken(tokenName, jwt);
+		
+		return jwt;
 	}
 	
 	public String authenticateByToken(String token) {
