@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ApiHttpExampleService {
 
-	public MultiValueMap<String, String> connectToApiServer() {
+	public ResponseEntity<String> connectToApiServer() {
 	
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.add("", "");
@@ -31,7 +31,7 @@ public class ApiHttpExampleService {
                 String.class // {요청시 반환되는 데이터 타입}	
 		);
 		
-		return requestBody;
+		return response;
 		
 	}
 	
