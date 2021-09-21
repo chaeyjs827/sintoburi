@@ -45,6 +45,9 @@ dependencies {
 	// Spring AMQP for RabbitMQ
 	implementation 'org.springframework.amqp:spring-rabbit:1.3.9.RELEASE'	
 
+	// Jackson Json Convertor
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
+	
 
 	runtimeOnly('com.h2database:h2')
 
