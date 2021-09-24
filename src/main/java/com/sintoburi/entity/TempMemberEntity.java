@@ -53,8 +53,6 @@ public class TempMemberEntity {
 	@Column
 	private Date updatedDate;
 	
-	
-	
 	@Builder
 	public TempMemberEntity(Long id, String username, String email, String password) {
 		this.id = id;
