@@ -73,6 +73,11 @@ public class UtilJwt {
 		return jwt;
 	}
 	
+	public String tempCreateToken(String username, long expTime) {
+		// access-token과 refresh-token을 동시에 생성 해서 return
+		return null;
+	}
+	
 	public String authenticateByToken(String token) {
 		Claims claims = Jwts.parserBuilder()
 				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
