@@ -23,12 +23,15 @@ public class UtilRsaKey {
 	 * 256비트 RSA 키쌍 생성
 	 */
 	public KeyPair generateRsaKeyPair() throws Exception {
-		SecureRandom secureRandom = new SecureRandom();
-		KeyPairGenerator gen;
-		gen = KeyPairGenerator.getInstance("RSA");
-		gen.initialize(256, secureRandom);
-		KeyPair keyPair = gen.genKeyPair();
-		return keyPair;
+//		SecureRandom secureRandom = new SecureRandom();
+//		KeyPairGenerator gen;
+//		gen = KeyPairGenerator.getInstance("RSA");
+//		gen.initialize(1024, secureRandom);
+//		KeyPair keyPair = gen.genKeyPair();
+//		return keyPair;
+		KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+		gen.initialize(256, new SecureRandom());
+		return gen.genKeyPair();
 	}
 
 	/**

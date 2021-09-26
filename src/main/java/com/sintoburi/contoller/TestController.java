@@ -1,6 +1,8 @@
 package com.sintoburi.contoller;
 
 import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +38,25 @@ public class TestController {
 		KeyPair keyPair = null;
 		try {
 			keyPair = utilRsaKey.generateRsaKeyPair();
-			System.out.println("??");
-		} catch(Exception e) {
 			
+			PublicKey publicKey = keyPair.getPublic();
+			PrivateKey privateKey = keyPair.getPrivate();
+			
+			String plainText = "암호화 할 문자열";
+			
+			// Base64 인코딩된 암호화 문자열
+			String encrypted = utilRsaKey.encryptRSA(plainText, publicKey);
+			System.out.println("encrypted : " + encrypted);
+			
+			// 복호화
+			String decrypted = utilRsaKey.decryptRSA(encrypted, privateKey);
+			System.out.println("decrypted : " + decrypted);
+
+			// 공개키를 Base64 인코딩한 문
+			
+			
+		} catch(Exception e) {
+			System.out.println(e.getStackTrace());
 		}
 		return keyPair;
 	}
