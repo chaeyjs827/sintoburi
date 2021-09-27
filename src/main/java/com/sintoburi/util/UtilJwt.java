@@ -7,8 +7,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -60,11 +58,19 @@ public class UtilJwt {
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);	// Binary Data를 Text로 바꿈
 		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());	// 암호화된 key
 		
+		long now = System.currentTimeMillis();
+		Date issuedAt = new Date(now);
+		Date exp = new Date(now+expTime);
+		
 		String jwt = Jwts.builder()
+				.claim("at", "access-token-test")
+				.claim("rt", "refresh-token-test")
 				.setHeaderParam("type", "jwt")
-				.setSubject(tokenName)
-				.signWith(signingKey, signatureAlgorithm)
-				.setExpiration(new Date(System.currentTimeMillis()+expTime))
+				.setId(tokenName)	// [To-Do] Username으로 변경 할 
+//				.setSubject(tokenName)
+				.signWith(signingKey, signatureAlgorithm)	// 토큰 암호화 알고리즘
+				.setExpiration((exp))		// 토큰 만료시간
+				.setIssuedAt(issuedAt)						// 토큰 발행 시간
 				.compact();
 
 		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
