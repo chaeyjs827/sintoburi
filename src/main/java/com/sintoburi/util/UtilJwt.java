@@ -2,6 +2,7 @@ package com.sintoburi.util;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -48,8 +49,24 @@ public class UtilJwt {
 	private UtilRedis utilRedis;
 	
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
-	public String createToken(String tokenName, long expTime) {
+
+	public String authenticateToken(String username, long expTime) {
 	
+		String at = createToken(3600);
+		String rt = createToken(7200);
+
+		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
+//		utilRedis.setToken(tokenName, jwt);
+		String jwt = Jwts.builder()
+				.setHeaderParam("type", "jwt")
+				.claim("username", username)
+				.claim("at", at)
+				.claim("rt", rt)
+				.compact();
+		return jwt;
+	}
+	
+	private String createToken(long expTime) {
 		if(expTime <= 0) {
 			throw new RuntimeException("Expired time must be greater than 0");
 		}
@@ -63,19 +80,14 @@ public class UtilJwt {
 		Date exp = new Date(now+expTime);
 		
 		String jwt = Jwts.builder()
-				.claim("at", "access-token-test")
-				.claim("rt", "refresh-token-test")
 				.setHeaderParam("type", "jwt")
-				.setId(tokenName)	// [To-Do] Username으로 변경 할 
-//				.setSubject(tokenName)
+//				.setAudience("");	// audience는 뭔지 아직 모르겠
+				.setId(UUID.randomUUID().toString())	// jti
+//				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
+				.setIssuedAt(issuedAt)						// 토큰 발행 시간
 				.signWith(signingKey, signatureAlgorithm)	// 토큰 암호화 알고리즘
 				.setExpiration((exp))		// 토큰 만료시간
-				.setIssuedAt(issuedAt)						// 토큰 발행 시간
 				.compact();
-
-		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
-//		utilRedis.setToken(tokenName, jwt);
-		
 		return jwt;
 	}
 	

@@ -22,6 +22,14 @@ public class JwtTest {
 				.andReturn();
 		String content = result.getResponse().getContentAsString();
 		System.out.println(content);
+	}	
+	
+	@Test
+	public void authenticateTokenTest() throws Exception {
+		MvcResult result = mockMvc.perform(get("/api/oauth/authenticate-token"))
+				.andReturn();
+		String content = result.getResponse().getContentAsString();
+		System.out.println(content);
 	}
 	
 	@Test
