@@ -52,9 +52,30 @@ public class UtilJwt {
 
 	public String authenticateToken(String username, long expTime) {
 	
-		String at = createToken(3600);
-		String rt = createToken(7200);
+		String at = createToken(3600);	// access-token
+		String rt = createToken(7200);	// refresh-token
 
+		/*
+		 	{
+			  "typ": "JWT",
+			  # "alg": "RS256"
+			} 
+		  
+		  {
+			  "at": "at",
+			  "rt": "rt",
+			  "id": "s_customer",
+			  # "isExpired": false,
+			  # "created_at": "20210928103512",
+			  # "iat": 1632792912,
+			  # "exp": 1635384912
+}
+		 */
+		
+		long now = System.currentTimeMillis();
+		Date issuedAt = new Date(now);
+		Date exp = new Date(now+expTime);
+		
 		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
 //		utilRedis.setToken(tokenName, jwt);
 		String jwt = Jwts.builder()
@@ -62,6 +83,9 @@ public class UtilJwt {
 				.claim("username", username)
 				.claim("at", at)
 				.claim("rt", rt)
+				.setIssuedAt(issuedAt)	// 토큰 발행 시간
+				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
+				.setExpiration((exp))		// 토큰 만료시간
 				.compact();
 		return jwt;
 	}
@@ -79,14 +103,32 @@ public class UtilJwt {
 		Date issuedAt = new Date(now);
 		Date exp = new Date(now+expTime);
 		
+		/**
+			{
+			   "typ": "JWT",
+			   "alg": "RS256"
+			}
+			
+			{
+			  # "aud": "2",
+			  "jti": "483f2c50032f5b9e6f7888a462fab8ba386285631c3365fca3d8f22fcf2203d30d480af819a08265",
+			  "iat": 1632792911,
+			  "nbf": 1632792911,
+			  "exp": 1664328911,
+			  # "sub": "1",
+			  # "scopes": []
+			}
+		 */
+		
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", "jwt")
-//				.setAudience("");	// audience는 뭔지 아직 모르겠
 				.setId(UUID.randomUUID().toString())	// jti
-//				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
-				.setIssuedAt(issuedAt)						// 토큰 발행 시간
+				.setIssuedAt(issuedAt)	// 토큰 발행 시간
+				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
 				.signWith(signingKey, signatureAlgorithm)	// 토큰 암호화 알고리즘
 				.setExpiration((exp))		// 토큰 만료시간
+//				.setAudience("");	// audience는 토큰을 사용할 수신자인데.. 정확히 어떻게 사용 하는지 파악 필
+//				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
 				.compact();
 		return jwt;
 	}
