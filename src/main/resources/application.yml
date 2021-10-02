@@ -26,12 +26,15 @@ spring:
 
   # jpa
   jpa:
-    show-sql: false
     hibernate:
       ddl-auto: update
+    generate-ddl: true
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#        format_sql: true
+    
   
   #devtool      
   devtools:
