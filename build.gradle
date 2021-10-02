@@ -48,8 +48,8 @@ dependencies {
 	// Jackson Json Convertor
 	// implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
 	
-
 	runtimeOnly('com.h2database:h2')
+	runtimeOnly('mysql:mysql-connector-java')
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
