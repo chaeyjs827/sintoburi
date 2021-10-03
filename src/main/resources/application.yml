@@ -13,12 +13,13 @@ spring:
     view:
       prefix: /templates
       suffix: .html
-  datasource:
-    url: jdbc:h2:mem:legacydb;MODE=MySQL
-    platform: h2
-    username: test
-    password: test
-    driverClassName: org.h2.Driver
+#  2021.10.03 docker-compose 테스트 위해 주석 처
+#  datasource:
+#    url: jdbc:h2:mem:legacydb;MODE=MySQL
+#    platform: h2
+#    username: test
+#    password: test
+#    driverClassName: org.h2.Driver
   h2:
     console:
       enabled: true
@@ -37,7 +38,7 @@ spring:
     
   
   #devtool      
-  devtools:
+  devtools: 
     livereload:
       enabled: true
       

@@ -1,3 +1,17 @@
- 
- 
- 내용 확인 후 입
+version: "3.7"
+
+services: 
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_USER: plee
+      MYSQL_DATABASE: spring_social
+      MYSQL_PASSWORD: plee
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - "./database/spring_social/:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    container_name: plee_mysql
+    networks:
+      - backend-network
