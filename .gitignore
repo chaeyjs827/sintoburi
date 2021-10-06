@@ -38,3 +38,7 @@ out/
 
 
 .csv
+
+### docker files ###
+**/spring_social/**
+
