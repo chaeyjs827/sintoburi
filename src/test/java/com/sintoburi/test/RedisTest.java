@@ -21,7 +21,7 @@ public class RedisTest {
 	@Test
 	public void testString() throws Exception {
 	
-		final String key = "testJun";
+		final String key = "hahaha";
 		
 		final ValueOperations<String, String> str = redisTemplate.opsForValue();
 		
