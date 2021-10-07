@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	
 	// dependency for sent mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -51,6 +52,7 @@ dependencies {
 	// Jackson Json Convertor
 	// implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
 	
+	// migrating h2 to mysql(2021.10.07)
 	runtimeOnly('com.h2database:h2')
 	runtimeOnly('mysql:mysql-connector-java')
 
