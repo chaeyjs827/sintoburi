@@ -13,28 +13,40 @@ spring:
     view:
       prefix: /templates
       suffix: .html
-  datasource:
-    url: jdbc:h2:mem:legacydb;MODE=MySQL
-    platform: h2
-    username: test
-    password: test
-    driverClassName: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+#  2021.10.03 docker-compose 테스트 위해 주석 처
+#  datasource:
+#    url: jdbc:h2:mem:legacydb;MODE=MySQL
+#    platform: h2
+#    username: test
+#    password: test
+#    driverClassName: org.h2.Driver
 
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+  
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: 
+  
   # jpa
   jpa:
-    show-sql: false
     hibernate:
       ddl-auto: update
+    generate-ddl: true
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+    
   
   #devtool      
-  devtools:
+  devtools: 
     livereload:
       enabled: true
       
@@ -50,10 +62,10 @@ spring:
           auth: true
           starttls:
             enable: true
-#  #redis
-#  redis:
-#    host:localhost
-#    port:6379
+  #redis
+  redis:
+    host: localhost
+    port: 6379
 #security:
 #  basic:
 #    enable : false
