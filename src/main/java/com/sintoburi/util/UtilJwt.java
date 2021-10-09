@@ -10,6 +10,8 @@ import javax.xml.bind.DatatypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sintoburi.config.JwtConfig;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -43,7 +45,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class UtilJwt {
+public class UtilJwt extends JwtConfig {
+	
+	public static final long ACCESS_TOKEN_EXP = 3600;
+	public static final long REFRESH_TOKEN_EXP = 7200;
 	
 	@Autowired
 	private UtilRedis utilRedis;
@@ -52,8 +57,8 @@ public class UtilJwt {
 
 	public String authenticateToken(String username, long expTime) {
 	
-		String at = createToken(3600);	// access-token
-		String rt = createToken(7200);	// refresh-token
+		String at = createToken(ACCESS_TOKEN_EXP);	// access-token
+		String rt = createToken(REFRESH_TOKEN_EXP);	// refresh-token
 
 		/*
 		 	{

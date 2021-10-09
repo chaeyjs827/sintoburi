@@ -2,8 +2,11 @@ package com.sitoburi.constant;
 
 public enum UserStatusConst {
 	
-	BLOCKED_USER("block", "401"),
-	WITHDRAWAL_USER("withdrawal", "444");
+	NORMAL_USER("normal", "100"),
+	BLOCKED_USER("block", "101"),
+	WITHDRAWAL_USER("withdrawal", "102"),
+	DORMANT_USER("dormant", "103")
+	;
 	
 	private final String name;
 	private final String code;
