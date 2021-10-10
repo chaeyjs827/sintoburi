@@ -49,7 +49,8 @@ public class OAuthController {
 	@GetMapping(value = "/oauth/authenticate-token")
     @ResponseBody
 	public Map<String, String> authenticateToken() {
-		String jwt = utilJwt.authenticateToken("OH-DAMN", 262974600);	// 262974600 is a month
+//		String jwt = utilJwt.authenticateToken("OH-DAMN", 262974600);	// 262974600 is a month
+		String jwt = utilJwt.authenticateToken("OH-DAMN", 5000);	// 262974600 is a month
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
