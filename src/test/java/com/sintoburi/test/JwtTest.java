@@ -1,9 +1,8 @@
 package com.sintoburi.test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
-import org.h2.api.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -49,14 +47,10 @@ public class JwtTest {
 			System.out.println("=============");
 			System.out.println(content);
 			System.out.println("=============");
-		} catch (ExpiredJwtException e) {
-			System.out.println("오 만료됨~~");
-        } catch (JwtException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch( Exception e) {
+        	System.out.println("[에러 발생 in Test 메소] : Exception e");
+        	e.printStackTrace();
+        }
 	}
 	
 	@Test

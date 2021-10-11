@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.sintoburi.config.JwtConfig;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -149,12 +150,23 @@ public class UtilJwt extends JwtConfig {
 		return null;
 	}
 	
-	public String authenticateByToken(String token) {
-		Claims claims = Jwts.parserBuilder()
-				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
-				.build()
-				.parseClaimsJws(token)
-				.getBody();
+	public String authenticateByToken(String token){
+		Claims claims = null;
+		try {
+			claims = Jwts.parserBuilder()
+					.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+					.build()
+					.parseClaimsJws(token)
+					.getBody();
+		}  catch (IllegalArgumentException ex){
+//          log.error("Unable to get JWT token", ex);
+      	System.out.println("[에러 발생] : IllegalArgumentException e");
+      } catch (ExpiredJwtException ex){
+//          log.error("JWT Token has expired", ex);
+//          throw new ExpiredJwtException("JWT Token has expired");
+      	System.out.println("[에러 발생] : ExpiredJwtException e");
+      }
+
 		return claims.getSubject();
 	}
 	
