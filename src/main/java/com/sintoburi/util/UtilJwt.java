@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import com.sintoburi.config.JwtConfig;
@@ -48,20 +49,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class UtilJwt extends JwtConfig {
 	
-	public static final long ACCESS_TOKEN_EXP = 3600;
-	public static final long REFRESH_TOKEN_EXP = 7200;
-	
 	// 30( 1000 * 60초 * 30분) = 30분
-	private long ACCESS_TOKEN_VALIDATION_SECOND = 1000 * 60l * 30l;	
+	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;	
 	// 30일( 1000 * 60초 * 60초 * 24시간 * 30일) = 30
-	private long REFRESH_TOKEN_VALIDATION_SECOND = 1000 * 60l * 60l * 24l * 30;
+	private long REFRESH_TOKEN_EXP = 1000 * 60l * 60l * 24l * 30;
 	
 	@Autowired
 	private UtilRedis utilRedis;
 	
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 
-	public String authenticateToken(String username, long expTime) {
+	public String authenticateToken(String username) {
 	
 		String at = createToken(ACCESS_TOKEN_EXP);	// access-token
 		String rt = createToken(REFRESH_TOKEN_EXP);	// refresh-token
@@ -85,7 +83,7 @@ public class UtilJwt extends JwtConfig {
 		
 		long now = System.currentTimeMillis();
 		Date issuedAt = new Date();
-		Date exp = new Date(now+(ACCESS_TOKEN_VALIDATION_SECOND));
+		Date exp = new Date(now+(ACCESS_TOKEN_EXP));
 //		Date exp = new Date(now+(REFRESH_TOKEN_VALIDATION_SECOND));
 		
 		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
@@ -99,6 +97,8 @@ public class UtilJwt extends JwtConfig {
 				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
 				.setExpiration((exp))		// 토큰 만료시간
 				.compact();
+		
+		saveJwtToCache(username, jwt);
 		return jwt;
 	}
 	
@@ -177,6 +177,10 @@ public class UtilJwt extends JwtConfig {
 				.parseClaimsJws(token)
 				.getBody();
 		return claims;
+	}
+	
+	public void saveJwtToCache(String username, String jwt) {
+		utilRedis.setToken(username, jwt);
 	}
 	
 }

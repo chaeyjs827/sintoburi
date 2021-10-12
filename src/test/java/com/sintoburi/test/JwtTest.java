@@ -21,7 +21,9 @@ public class JwtTest {
 	
 	@Test
 	public void jwtCreateTest() throws Exception {
-		MvcResult result = mockMvc.perform(get("/api/oauth/login"))
+		MvcResult result = mockMvc.perform(get("/api/oauth/login")
+				.param("username", "tester")
+				.param("password", "password-test"))
 				.andReturn();
 		String content = result.getResponse().getContentAsString();
 		System.out.println(content);
