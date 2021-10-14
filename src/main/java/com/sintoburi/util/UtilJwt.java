@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import com.sintoburi.config.JwtConfig;
+import com.sitoburi.constant.JwtConst;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -59,10 +60,10 @@ public class UtilJwt extends JwtConfig {
 	
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 
-	public String authenticateToken(String username) {
+	public String createJwtToken(String username) {
 	
-		String at = createToken(ACCESS_TOKEN_EXP);	// access-token
-		String rt = createToken(REFRESH_TOKEN_EXP);	// refresh-token
+		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
+		String rt = createToken(JwtConst.ACCESS_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
 		/*
 		 	{
@@ -91,18 +92,18 @@ public class UtilJwt extends JwtConfig {
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", "jwt")
 				.claim("username", username)
-				.claim("at", at)
-				.claim("rt", rt)
+				.claim(JwtConst.ACCESS_TOKEN.getShortName(), at)
+				.claim(JwtConst.ACCESS_TOKEN.getShortName(), rt)
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
 				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
 				.setExpiration((exp))		// 토큰 만료시간
 				.compact();
 		
-		saveJwtToCache(username, jwt);
+		utilRedis.setToken(username, jwt);
 		return jwt;
 	}
 	
-	private String createToken(long expTime) {
+	private String createToken(String tokenName, long expTime) {
 		if(expTime <= 0) {
 			throw new RuntimeException("Expired time must be greater than 0");
 		}
@@ -133,7 +134,7 @@ public class UtilJwt extends JwtConfig {
 		 */
 		
 		String jwt = Jwts.builder()
-				.setHeaderParam("type", "jwt")
+				.setHeaderParam("type", tokenName)
 				.setId(UUID.randomUUID().toString())	// jti
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
 				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
@@ -143,11 +144,6 @@ public class UtilJwt extends JwtConfig {
 //				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
 				.compact();
 		return jwt;
-	}
-	
-	public String tempCreateToken(String username, long expTime) {
-		// access-token과 refresh-token을 동시에 생성 해서 return
-		return null;
 	}
 	
 	public String authenticateByToken(String token){
@@ -178,9 +174,4 @@ public class UtilJwt extends JwtConfig {
 				.getBody();
 		return claims;
 	}
-	
-	public void saveJwtToCache(String username, String jwt) {
-		utilRedis.setToken(username, jwt);
-	}
-	
 }

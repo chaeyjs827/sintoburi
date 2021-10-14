@@ -63,7 +63,7 @@ public class MemberController {
 		
 		// 유저 정보 유효성 검증 이후 jwt 토큰 생성
 		
-		String jwt = utilJwt.tempCreateToken(username, 3600);
+		String jwt = utilJwt.createJwtToken(username);
 		
 		return memberService.getMemberByUsername(username);
 	}

@@ -35,7 +35,7 @@ public class OAuthController {
 	public Map<String, String> oauthLogin(@RequestParam String username,
 									@RequestParam String password) {
 		
-		String jwt = utilJwt.authenticateToken("log-test");	
+		String jwt = utilJwt.createJwtToken("log-test");	
 		
 		
 		
@@ -49,7 +49,7 @@ public class OAuthController {
     @ResponseBody
 	public Map<String, String> authenticateToken() {
 //		String jwt = utilJwt.authenticateToken("OH-DAMN", 262974600);
-		String jwt = utilJwt.authenticateToken("OH-DAMN");	
+		String jwt = utilJwt.createJwtToken("OH-DAMN");	
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
