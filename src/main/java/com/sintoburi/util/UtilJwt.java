@@ -8,8 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
 import com.sitoburi.constant.JwtConst;
@@ -60,11 +60,14 @@ public class UtilJwt extends JwtConfig {
 	
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 
+	@Transactional
 	public String createJwtToken(String username) {
 	
 		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
 		String rt = createToken(JwtConst.ACCESS_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
+		
+		
 		/*
 		 	{
 			  "typ": "JWT",
@@ -114,7 +117,12 @@ public class UtilJwt extends JwtConfig {
 		Date issuedAt = new Date(now);
 		Date exp = new Date(now+expTime);
 		
-		/**
+		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
+			
+		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
+			
+		}
+ 		/**
 			{
 			   "typ": "JWT",
 			   "alg": "RS256"
