@@ -52,7 +52,7 @@ public class UtilJwt extends JwtConfig {
 	
 	// 30( 1000 * 60초 * 30분) = 30분
 	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;	
-	// 30일( 1000 * 60초 * 60초 * 24시간 * 30일) = 30
+	// 30일( 1000 * 60초 * 60초 * 24시간 * 30일) = 30일
 	private long REFRESH_TOKEN_EXP = 1000 * 60l * 60l * 24l * 30;
 	
 	@Autowired
@@ -84,8 +84,6 @@ public class UtilJwt extends JwtConfig {
 		
 		long now = System.currentTimeMillis();
 		Date issuedAt = new Date();
-		Date exp = new Date(now+(ACCESS_TOKEN_EXP));
-//		Date exp = new Date(now+(REFRESH_TOKEN_VALIDATION_SECOND));
 		
 		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
 //		utilRedis.setToken(tokenName, jwt);
@@ -96,7 +94,7 @@ public class UtilJwt extends JwtConfig {
 				.claim(JwtConst.ACCESS_TOKEN.getShortName(), rt)
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
 				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
-				.setExpiration((exp))		// 토큰 만료시간
+				.setExpiration(new Date(now+(ACCESS_TOKEN_EXP)))		// 토큰 만료시간
 				.compact();
 		
 		utilRedis.setToken(username, jwt);

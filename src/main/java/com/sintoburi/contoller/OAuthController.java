@@ -27,17 +27,12 @@ public class OAuthController {
 	@Autowired
 	private UtilJwt utilJwt;
 	
-	@Autowired
-	private UtilRedis utilRedis;
-	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody
 	public Map<String, String> oauthLogin(@RequestParam String username,
 									@RequestParam String password) {
 		
 		String jwt = utilJwt.createJwtToken("log-test");	
-		
-		
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
@@ -48,8 +43,7 @@ public class OAuthController {
 	@GetMapping(value = "/oauth/authenticate-token")
     @ResponseBody
 	public Map<String, String> authenticateToken() {
-//		String jwt = utilJwt.authenticateToken("OH-DAMN", 262974600);
-		String jwt = utilJwt.createJwtToken("OH-DAMN");	
+		String jwt = utilJwt.createJwtToken("test-username");	
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
