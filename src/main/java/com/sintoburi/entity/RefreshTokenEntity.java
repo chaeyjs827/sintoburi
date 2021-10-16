@@ -24,7 +24,7 @@ public class RefreshTokenEntity {
 	private String id;
 
 	@Column
-	public Integer accessTokenId;
+	public String refreshTokenId;
 	
 	@Column
 	public Boolean isRevoked;
