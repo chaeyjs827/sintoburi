@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
+import com.sintoburi.service.JwtService;
 import com.sitoburi.constant.JwtConst;
 
 import io.jsonwebtoken.Claims;
@@ -58,13 +59,16 @@ public class UtilJwt extends JwtConfig {
 	@Autowired
 	private UtilRedis utilRedis;
 	
+	@Autowired
+	private JwtService jwtService;
+	
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
 
 	@Transactional
 	public String createJwtToken(String username) {
 	
 		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
-		String rt = createToken(JwtConst.ACCESS_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
+		String rt = createToken(JwtConst.REFRESH_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
 		
 		
@@ -116,12 +120,7 @@ public class UtilJwt extends JwtConfig {
 		long now = System.currentTimeMillis();
 		Date issuedAt = new Date(now);
 		Date exp = new Date(now+expTime);
-		
-		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
-			
-		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
-			
-		}
+
  		/**
 			{
 			   "typ": "JWT",
@@ -149,6 +148,13 @@ public class UtilJwt extends JwtConfig {
 //				.setAudience("");	// audience는 토큰을 사용할 수신자인데.. 정확히 어떻게 사용 하는지 파악 필
 //				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
 				.compact();
+		
+		
+		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
+//			jwtService.saveRefreshToken(jwt);
+		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
+			jwtService.saveRefreshToken(jwt);
+		}
 		return jwt;
 	}
 	

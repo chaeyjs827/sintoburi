@@ -27,8 +27,7 @@ public class JwtService {
 				.refreshTokenId(refreshToken)
 				.build();
 		
-		refreshTokenRepository.save(null);
-		
+		refreshTokenRepository.save(entity);
 		
 		Long id = null;
 		

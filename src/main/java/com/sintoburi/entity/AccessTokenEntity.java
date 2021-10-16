@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -21,7 +23,8 @@ import lombok.Setter;
 public class AccessTokenEntity {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column
 	public Integer memberId;
@@ -40,7 +43,7 @@ public class AccessTokenEntity {
 	
 	
 	@Builder
-	public AccessTokenEntity(String id) {
+	public AccessTokenEntity(Long id) {
 		this.id = id;
 	}
 	

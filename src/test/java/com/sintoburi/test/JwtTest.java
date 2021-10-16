@@ -31,10 +31,17 @@ public class JwtTest {
 	
 	@Test
 	public void authenticateTokenTest() throws Exception {
-		MvcResult result = mockMvc.perform(get("/api/oauth/authenticate-token"))
-				.andReturn();
-		String content = result.getResponse().getContentAsString();
-		System.out.println(content);
+
+		try {
+			MvcResult result = mockMvc.perform(get("/api/oauth/authenticate-token"))
+					.andReturn();
+			String content = result.getResponse().getContentAsString();
+			System.out.println(content);
+		} catch( Exception e) {
+        	System.out.println("[에러 발생 in Test 메소] : Exception e");
+        	e.printStackTrace();
+        }
+
 	}
 	
 	@Test
