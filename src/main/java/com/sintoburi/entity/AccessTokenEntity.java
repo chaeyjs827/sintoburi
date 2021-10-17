@@ -1,5 +1,6 @@
 package com.sintoburi.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,28 +24,32 @@ import lombok.Setter;
 public class AccessTokenEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
-	@Column
+	@Column(nullable = true)
 	public Integer memberId;
 	
-	@Column
+	@Column(nullable = true)
 	public Boolean isRevoked;
 	
-	@Column
+	@Column(nullable = true)
 	private Date expiredDate;
 
-	@Column
-	private Date createdDate;
+	@Column(nullable = true)
+	private LocalDateTime createdDate;
 
-	@Column
-	private Date updatedDate;
+	@Column(nullable = true)
+	private LocalDateTime updatedDate;
 	
 	
 	@Builder
-	public AccessTokenEntity(Long id) {
+	public AccessTokenEntity(String id, Integer memberId, Boolean isRevoked
+			,Date expiredDate) {
 		this.id = id;
+		this.memberId = memberId;
+		this.expiredDate = expiredDate;
+		this.createdDate = LocalDateTime.now();
+		this.updatedDate = LocalDateTime.now();
 	}
 	
 }
