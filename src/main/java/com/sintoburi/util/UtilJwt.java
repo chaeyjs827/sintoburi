@@ -153,7 +153,7 @@ public class UtilJwt extends JwtConfig {
 		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
 //			jwtService.saveRefreshToken(jwt);
 		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
-			jwtService.saveRefreshToken(jwt);
+			jwtService.saveRefreshToken(jwt, exp, false);	// isRevoked 사용 하기 전까지는 false로 저장
 		}
 		return jwt;
 	}

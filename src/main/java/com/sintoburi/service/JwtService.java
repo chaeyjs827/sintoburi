@@ -1,5 +1,7 @@
 package com.sintoburi.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,12 @@ public class JwtService {
 		return id;
 	}
 	
-	public Long saveRefreshToken(String refreshToken) {
+	public Long saveRefreshToken(String refreshToken, Date exp, Boolean isRevoked) {
 		RefreshTokenEntity entity = RefreshTokenEntity.builder()
 				.refreshTokenId(refreshToken)
+				.expiredDate(exp)
+				.isRevoked(isRevoked)
 				.build();
-		
 		refreshTokenRepository.save(entity);
 		
 		Long id = null;
