@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class MemberService {
+public class UserService {
 
 	private MemberRepository memberRepository;
 	
@@ -58,5 +58,11 @@ public class MemberService {
 				.build();
 		utilLogger.log(apiReqResLogDto);
 		return memberRepository.findById(id);
+	}
+	
+	@Transactional
+	public Long saveUser(String username, String password) {
+		
+		return null;
 	}
 }
