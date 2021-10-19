@@ -37,6 +37,17 @@ public class MemberTest {
 	}
 	
 	@Test
+	void apiUserSignUpTest() throws Exception {
+		MvcResult result = mockMvc.perform(post("/api/user/signUp")
+							.param("username", "admin")
+							.param("password", "admin-password")
+							.param("email", "admin@naver.com"))		
+					.andReturn();
+		String content = result.getResponse().getContentAsString();
+		System.out.println("result content : " + content);
+	}
+	
+	@Test
 	void apiMemberById() throws Exception {
 		MvcResult result = mockMvc.perform(get("/api/member/findById")
 							.param("id", "1"))

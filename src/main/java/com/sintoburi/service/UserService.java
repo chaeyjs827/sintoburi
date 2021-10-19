@@ -47,7 +47,7 @@ public class UserService {
 	}
 	
 	public Optional<MemberEntity> getMemberById(Long id) {
-		ApiReqResLogDto 		apiReqResLogDto = ApiReqResLogDto.builder()
+		ApiReqResLogDto apiReqResLogDto = ApiReqResLogDto.builder()
 				.apiMethodName("test")
 				.apiName("test")
 				.requestType("test")
@@ -61,8 +61,13 @@ public class UserService {
 	}
 	
 	@Transactional
-	public Long saveUser(String username, String password) {
-		
+	public Long userSignUp(String username, String email, String password) {
+		MemberEntity entity = MemberEntity.builder()
+				.username(username)
+				.email(email)
+				.password(password)
+				.build();
+		memberRepository.save(entity);
 		return null;
 	}
 }

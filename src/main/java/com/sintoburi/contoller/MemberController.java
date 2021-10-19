@@ -70,8 +70,8 @@ public class MemberController {
 	
 	@PostMapping("/user/signUp")
 	@ResponseBody
-	public Long userSignUp(@RequestParam String username, @RequestParam String password) {
-		
+	public String userSignUp(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
+		memberService.userSignUp(username, email, password);
 		// 유저 정보 유효성검사
 		
 		// 1. 아이디 중복 확인(탈퇴 계정 포함)
@@ -84,8 +84,8 @@ public class MemberController {
 	
 	@PostMapping("/user/findId")
 	@ResponseBody
-	public String userFindId(@RequestParam String username, @RequestParam String email) {
-		
+	public String userFindId(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
+		memberService.userSignUp(username, email, password);
 		return null;
 	}
 	
