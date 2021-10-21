@@ -27,29 +27,23 @@ public class OAuthController {
 	@Autowired
 	private UtilJwt utilJwt;
 	
-	@Autowired
-	private UtilRedis utilRedis;
-	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody
-	public Map<String, String> oauthLogin() {
-		String accessToken = utilJwt.authenticateToken("accessToken", 10000);
-		String refreshToken = utilJwt.authenticateToken("refreshToken", 200000);
-//		String getAccessToken = utilRedis.getToken("accessToken");
-//		String getRefreshToken = utilRedis.getToken("refreshToken");
+	public Map<String, String> oauthLogin(@RequestParam String username,
+									@RequestParam String password) {
+		
+		String jwt = utilJwt.createJwtToken("log-test");	
 		
 		Map<String, String> result = new HashMap<String, String>();
-		result.put("access-token", accessToken);
-		result.put("refresh-token", refreshToken);
-//		result.put("get-access-token", getAccessToken);
-//		result.put("get-refresh-token", getRefreshToken);
+		result.put("jwt", jwt);
+		
 		return result;
 	}
 	
 	@GetMapping(value = "/oauth/authenticate-token")
     @ResponseBody
 	public Map<String, String> authenticateToken() {
-		String jwt = utilJwt.authenticateToken("OH-DAMN", 262974600);	// 262974600 is a month
+		String jwt = utilJwt.createJwtToken("test-username");	
 		
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
