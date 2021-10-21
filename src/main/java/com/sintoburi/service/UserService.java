@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class MemberService {
+public class UserService {
 
 	private MemberRepository memberRepository;
 	
@@ -47,7 +47,7 @@ public class MemberService {
 	}
 	
 	public Optional<MemberEntity> getMemberById(Long id) {
-		ApiReqResLogDto 		apiReqResLogDto = ApiReqResLogDto.builder()
+		ApiReqResLogDto apiReqResLogDto = ApiReqResLogDto.builder()
 				.apiMethodName("test")
 				.apiName("test")
 				.requestType("test")
@@ -58,5 +58,16 @@ public class MemberService {
 				.build();
 		utilLogger.log(apiReqResLogDto);
 		return memberRepository.findById(id);
+	}
+	
+	@Transactional
+	public Long userSignUp(String username, String email, String password) {
+		MemberEntity entity = MemberEntity.builder()
+				.username(username)
+				.email(email)
+				.password(password)
+				.build();
+		memberRepository.save(entity);
+		return null;
 	}
 }

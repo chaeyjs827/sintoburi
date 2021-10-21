@@ -1,9 +1,12 @@
 package com.sintoburi.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -23,25 +26,30 @@ public class AccessTokenEntity {
 	@Id
 	private String id;
 
-	@Column
+	@Column(nullable = true)
 	public Integer memberId;
 	
-	@Column
+	@Column(nullable = true)
 	public Boolean isRevoked;
 	
-	@Column
+	@Column(nullable = true)
 	private Date expiredDate;
 
-	@Column
-	private Date createdDate;
+	@Column(nullable = true)
+	private LocalDateTime createdDate;
 
-	@Column
-	private Date updatedDate;
+	@Column(nullable = true)
+	private LocalDateTime updatedDate;
 	
 	
 	@Builder
-	public AccessTokenEntity(String id) {
+	public AccessTokenEntity(String id, Integer memberId, Boolean isRevoked
+			,Date expiredDate) {
 		this.id = id;
+		this.memberId = memberId;
+		this.expiredDate = expiredDate;
+		this.createdDate = LocalDateTime.now();
+		this.updatedDate = LocalDateTime.now();
 	}
 	
 }

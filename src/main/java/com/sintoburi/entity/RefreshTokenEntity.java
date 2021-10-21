@@ -1,10 +1,14 @@
 package com.sintoburi.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Builder;
@@ -21,26 +25,39 @@ import lombok.Setter;
 public class RefreshTokenEntity {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Column
-	public Integer accessTokenId;
+	@Column(nullable = true)
+	public String refreshTokenId;
 	
-	@Column
+	@Column(nullable = true)
 	public Boolean isRevoked;
 	
-	@Column
+	@Column(nullable = true)
 	private Date expiredDate;
 	
 	@Column
-	private Date createdDate;
+	private LocalDateTime createdDate;
 
 	@Column
-	private Date updatedDate;
+	private LocalDateTime updatedDate;
 	
 	@Builder
-	public RefreshTokenEntity(String id) {
+	public RefreshTokenEntity(Long id, String refreshTokenId, Boolean isRevoked
+			,Date expiredDate) {
 		this.id = id;
+		this.refreshTokenId = refreshTokenId;
+		this.isRevoked = isRevoked;
+		this.expiredDate = expiredDate;
+		this.createdDate = LocalDateTime.now();
+		this.updatedDate = LocalDateTime.now();
 	}
+	
+//    @PrePersist
+//    public void setInsertDate() {
+//        this.createdDate = LocalDateTime.now();
+//        this.updatedDate = LocalDateTime.now();
+//    }
 	
 }
