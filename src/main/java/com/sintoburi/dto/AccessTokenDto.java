@@ -1,6 +1,12 @@
 package com.sintoburi.dto;
 
-import com.sintoburi.entity.MemberEntity;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+import com.sintoburi.entity.AccessTokenEntity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,22 +14,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
 @ToString
-@NoArgsConstructor
+@Builder
+@Getter
 public class AccessTokenDto {
-    private Long id;
-    
-    public MemberEntity toEntity() {
-    	return MemberEntity.builder()
-    			.id(id)
-    			.build();
-    }
-    
-    @Builder
-    public AccessTokenDto(Long id) {
-    	this.id = id;
-    }
+	
+	private String id;
+	public Integer memberId;
+	public Boolean isRevoked;
+	private Date expiredDate;
+	private LocalDateTime createdDate;
+	private LocalDateTime updatedDate;
 
 }
