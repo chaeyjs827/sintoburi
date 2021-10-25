@@ -41,7 +41,6 @@ public class AccessTokenEntity {
 	@Column(nullable = true)
 	private LocalDateTime updatedDate;
 	
-	
 	@Builder
 	public AccessTokenEntity(String id, Integer memberId, Boolean isRevoked
 			,Date expiredDate) {
