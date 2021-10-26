@@ -1,5 +1,9 @@
 package com.sintoburi.dto;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+
 import com.sintoburi.entity.MemberEntity;
 
 import lombok.Builder;
@@ -13,8 +17,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class MemberMemoDto {
+	
     private Long id;
-    
+	private Long memberId;
+	private Long adminId;
+	private String memo;
+	private LocalDateTime createdDate;
+	private LocalDateTime updatedDate;
+	
     public MemberEntity toEntity() {
     	return MemberEntity.builder()
     			.id(id)
