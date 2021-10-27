@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "oauth_refresh_token")
 @Entity
-@Builder
+//@Builder
 public class RefreshTokenEntity {
 
 	@Id

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "admin_role")
 @Entity
-@Builder
+//@Builder
 public class AdminRoleEntity {
 
 	@Id

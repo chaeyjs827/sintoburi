@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-@Builder
+//@Builder
 public class TestEntity {
 	private Long id;
 

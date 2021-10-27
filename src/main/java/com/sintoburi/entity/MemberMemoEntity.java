@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "member_memo")
 @Entity
-@Builder
+//@Builder
 public class MemberMemoEntity {
 
 	@Id

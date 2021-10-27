@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "member")
 @Entity
-@Builder
+//@Builder
 public class TempMemberEntity {
 
 	@Id

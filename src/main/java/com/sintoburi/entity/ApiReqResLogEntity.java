@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "api_req_res_log")
 @Entity
-@Builder
+//@Builder
 public class ApiReqResLogEntity {
 
 	@Id

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "admin_member")
 @Entity
-@Builder
+//@Builder
 public class AdminMemberEntity {
 
 	@Id

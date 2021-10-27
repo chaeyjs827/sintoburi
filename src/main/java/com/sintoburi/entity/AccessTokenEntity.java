@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "oauth_access_token")
 @Entity
-@Builder
+//@Builder
 public class AccessTokenEntity {
 
 	@Id
