@@ -11,14 +11,9 @@ import lombok.Getter;
 @Builder
 public class TestDto {
     private String name;
-
     private String product;
-
     private Integer price;
-
     private String address;
-
     private String img;
-
     private LocalDateTime orderedTime;
 }

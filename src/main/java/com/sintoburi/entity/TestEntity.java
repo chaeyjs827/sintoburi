@@ -8,17 +8,12 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-//@Builder
+@Builder
 public class TestEntity {
 	private Long id;
-
 	private String name;
-
 	private String product;
-
 	private Integer price;
-
 	private String address;
-
 	private LocalDateTime orderedTime;
 }
