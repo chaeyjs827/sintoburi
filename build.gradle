@@ -46,19 +46,22 @@ dependencies {
 	// lettuce for redis
 	implementation 'io.lettuce:lettuce-core:6.1.3.RELEASE'
 
-	// mapstruct(Lombok 사용시 mapstruct가 먼저 나와야 함)
-	compileOnly 'org.mapstruct:mapstruct:1.4.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-
 	// Spring AMQP for RabbitMQ
-	// implementation 'org.springframework.amqp:spring-rabbit:1.3.9.RELEASE'	
+	// implementation 'org.springframework.amqp:spring-rabbit:1.3.9.RELEASE'
 
 	// Jackson Json Convertor
 	// implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
-	
+
 	// migrating h2 to mysql(2021.10.07)
 	runtimeOnly('com.h2database:h2')
 	runtimeOnly('mysql:mysql-connector-java')
+
+	// mapstruct(Lombok 사용시 mapstruct먼저 선언 / 아니면 target에 @Builder가 있어도 무시됨)
+	compileOnly 'org.mapstruct:mapstruct:1.4.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+	compileOnly 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
