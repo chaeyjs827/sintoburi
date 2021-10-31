@@ -27,13 +27,8 @@ public class TestMapperTest {
 				.orderedTime(LocalDateTime.now())
 				.build();
 
-		System.out.println(testDto.toString());
-
 		TestEntity testEntity = TestMapper.INSTANCE.testDtoToTestEntity(testDto);
 
-		System.out.println("===== 테스트 시작 =====");
-
-		System.out.println(testEntity.toString());
 //		assertNotNull(testDto);
 //
 //		assertEquals("a", "a");

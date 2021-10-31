@@ -10,7 +10,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Builder
-@ToString
 public class TestEntity {
 	private Long id;
 	private String name;
