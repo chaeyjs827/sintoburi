@@ -1,5 +1,6 @@
 package com.sintoburi.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -19,18 +20,20 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class MemberService {
 
 	private MemberRepository memberRepository;
 	
 	private UtilLogger utilLogger;
 	
 	@Transactional 
-	public Long userSignup(MemberDto memberDto) {
+	public Long memberSignup(MemberDto memberDto) {
 		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberEntity.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+		memberEntity.setCreatedDate(LocalDateTime.now());
+		memberEntity.setUpdatedDate(LocalDateTime.now());
 
 		try {
 			memberRepository.save(memberEntity);

@@ -38,7 +38,7 @@ public class MemberTest {
 	
 	@Test
 	void apiUserSignUpTest() throws Exception {
-		MvcResult result = mockMvc.perform(post("/api/user/signUp")
+		MvcResult result = mockMvc.perform(post("/api/member/sign-up-test")
 							.param("username", "admin")
 							.param("password", "admin-password")
 							.param("email", "admin@naver.com"))		

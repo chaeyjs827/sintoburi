@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
-import com.sintoburi.service.UserService;
+import com.sintoburi.service.MemberService;
 import com.sintoburi.util.UtilJwt;
 
 import lombok.AllArgsConstructor;
@@ -23,15 +23,15 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 
 	@Autowired
-	private UserService memberService;
+	private MemberService memberService;
 	
 	@Autowired
 	private UtilJwt utilJwt;
 	
-	@GetMapping("/member/signup")
+	@PostMapping("/member/sign-up")
 	@ResponseBody
-	public String userSignup(MemberDto memberDto) {
-		memberService.userSignup(memberDto);
+	public String memberSignUp(MemberDto memberDto) {
+		memberService.memberSignup(memberDto);
 		return "hello";
 	}
 	
@@ -68,7 +68,7 @@ public class MemberController {
 		return memberService.getMemberByUsername(username);
 	}
 	
-	@PostMapping("/user/signUp")
+	@PostMapping("/member/sign-up-test")
 	@ResponseBody
 	public String userSignUp(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
 		memberService.userSignUp(username, email, password);

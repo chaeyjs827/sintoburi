@@ -9,7 +9,10 @@ import javax.persistence.Table;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -29,5 +32,10 @@ public class MemberEntity {
 	
 	@Column(length = 100, nullable = false) 
 	private String password;
+
+	private LocalDateTime createdDate = LocalDateTime.now();
+	private LocalDateTime updatedDate = LocalDateTime.now();
+
+
 	
 }
