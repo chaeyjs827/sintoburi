@@ -2,7 +2,6 @@ package com.sintoburi.mapper;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
-import com.sintoburi.entity.TestEntity;
 import org.junit.Test;
 
 public class MemberMapperTest {
@@ -16,7 +15,7 @@ public class MemberMapperTest {
 				.password("password")
 				.build();
 
-		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToTestEntity(memberDto);
+		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
 
 		System.out.println("===== 테스트 종료 =====");
 

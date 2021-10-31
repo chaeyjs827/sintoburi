@@ -15,9 +15,9 @@ public interface MemberMapper {
 	MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
 	@Mapping(target = "id", constant = "0L")
-	MemberEntity dtoToTestEntity(MemberDto memberDto);
+	MemberEntity dtoToEntity(MemberDto memberDto);
 
-	@Mapping(target = "img", expression = "java(testEntity.getProduct() + \".jpg\")")
-	MemberDto orderEntityToTestDto(MemberEntity memberEntity);
+	@Mapping(target = "id", constant = "0L")
+	MemberDto entityToDto(MemberEntity memberEntity);
 	
 }

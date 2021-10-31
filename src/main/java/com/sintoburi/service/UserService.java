@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.sintoburi.mapper.MemberMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,13 @@ public class UserService {
 	
 	@Transactional 
 	public Long userSignup(MemberDto memberDto) {
+		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
+
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-		
+		memberEntity.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+
 		try {
-			memberRepository.save(memberDto.toEntity());
+			memberRepository.save(memberEntity);
 //			return 1L;
 			
 		} catch(DataAccessException ex) {
