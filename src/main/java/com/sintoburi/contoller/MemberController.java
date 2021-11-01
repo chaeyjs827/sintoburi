@@ -3,12 +3,7 @@ package com.sintoburi.contoller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
@@ -28,11 +23,17 @@ public class MemberController {
 	@Autowired
 	private UtilJwt utilJwt;
 	
+//	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
+//	public String memberSignUp(MemberDto memberDto) {
 	@PostMapping("/member/sign-up")
 	@ResponseBody
-	public String memberSignUp(MemberDto memberDto) {
-		memberService.memberSignup(memberDto);
-		return "hello";
+	public void memberSignUp(@RequestBody MemberDto memberDto) {
+		try {
+			memberService.memberSignup(memberDto);
+//			return "hello";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@GetMapping("/member/findById")
