@@ -29,6 +29,12 @@ public class MemberController {
 	@ResponseBody
 	public void memberSignUp(@RequestBody MemberDto memberDto) {
 		try {
+			// 유저 정보 유효성검사
+
+			// 1. 아이디 중복 확인(탈퇴 계정 포함)
+			// 2. 이메일 중복 확인(탈퇴 계정 포함)
+
+			// To-Do Oauth계정 인증 내용
 			memberService.memberSignup(memberDto);
 //			return "hello";
 		} catch(Exception e) {

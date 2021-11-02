@@ -32,6 +32,7 @@ public class MemberService {
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberEntity.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+
 		memberEntity.setCreatedDate(LocalDateTime.now());
 		memberEntity.setUpdatedDate(LocalDateTime.now());
 
@@ -46,7 +47,7 @@ public class MemberService {
 		
 //		return memberRepository.save(memberDto.toEntity()).getId();
 	}
-	
+
 	@Transactional
 	public Optional<MemberEntity> getMemberByUsername(String username) {
 		return memberRepository.findByUsername(username);
