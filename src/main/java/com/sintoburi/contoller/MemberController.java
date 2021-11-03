@@ -66,13 +66,26 @@ public class MemberController {
 		//블락 유저 검증 로직
 		
 		//
-		
+
+		// 유저 존재 여부 확인
+
 		
 		// 유저 정보 유효성 검증 이후 jwt 토큰 생성
-		
-		String jwt = utilJwt.createJwtToken(username);
-		
-		return memberService.getMemberByUsername(username);
+		Boolean testBoolean = memberService.checkMember(username);
+//		if(memberService.checkMember(username)) {
+//			System.out.println("유저 없음");
+//		}
+
+		if(testBoolean) {
+			return null;
+//			return Optional<MemberEntity.builder()
+//					.email("값이 없수광")
+//					.build()>;
+		} else {
+			String jwt = utilJwt.createJwtToken(username);
+			return memberService.getMemberByUsername(username);
+		}
+
 	}
 	
 	@PostMapping("/member/sign-up-test")

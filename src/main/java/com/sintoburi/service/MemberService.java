@@ -77,4 +77,10 @@ public class MemberService {
 		memberRepository.save(entity);
 		return null;
 	}
+
+	@Transactional
+	public Boolean checkMember(String username) {
+		Boolean result = memberRepository.countByUsername(username) <= 0 ? true : false;
+		return true;
+	}
 }
