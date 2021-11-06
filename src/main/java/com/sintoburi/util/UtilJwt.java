@@ -177,8 +177,16 @@ public class UtilJwt extends JwtConfig {
 
 		return claims.getSubject();
 	}
-	
+
 	public Claims getClaimsByToken(String token) {
+//		Claims claims = Jwts.parserBuilder()
+//				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+//				.build()
+//				.
+		return null;
+	}
+
+	public Claims tempGetClaimsByToken(String token) {
 		Claims claims = Jwts.parserBuilder()
 				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
 				.build()

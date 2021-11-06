@@ -5,7 +5,6 @@ import com.sintoburi.util.UtilJwt;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,14 +29,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
         System.out.println("[jwt] : " + jwt);
 
-//        Claims claims = utilJwt.getClaimsByToken(jwt);
+//        Claims claims = utilJwt.tempGetClaimsByToken(jwt);
 //        System.out.println("[id] : " + claims.getId());
 //        System.out.println("[issuer] : " + claims.getIssuer());
 //        System.out.println("[subject] : " + claims.getSubject());
 //        System.out.println("[audience] : " + claims.getAudience());
 //        System.out.println("[expiration] : " + claims.getExpiration());
 //        System.out.println("[issuedAt] : " + claims.getIssuedAt());
-
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

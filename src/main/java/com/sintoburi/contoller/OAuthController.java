@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sintoburi.util.UtilJwt;
-import com.sintoburi.util.UtilRedis;
 
 import io.jsonwebtoken.Claims;
 
@@ -60,7 +59,7 @@ public class OAuthController {
 	@GetMapping(value = "/oauth/getClaimsByToken")
 	@ResponseBody
 	public Claims getClaimsByToken(@RequestParam String token) {
-		Claims result = utilJwt.getClaimsByToken(token);
+		Claims result = utilJwt.tempGetClaimsByToken(token);
 		return result;
 	}
 }
