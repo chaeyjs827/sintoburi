@@ -43,7 +43,7 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("/member/findById")
+	@GetMapping("/member/find-by-id")
 	@ResponseBody
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
