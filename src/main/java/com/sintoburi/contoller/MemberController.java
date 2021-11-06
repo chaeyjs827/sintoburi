@@ -2,6 +2,7 @@ package com.sintoburi.contoller;
 
 import java.util.Optional;
 
+import com.sintoburi.auth.AuthRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class MemberController {
 	
 	@GetMapping("/member/findById")
 	@ResponseBody
+	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
