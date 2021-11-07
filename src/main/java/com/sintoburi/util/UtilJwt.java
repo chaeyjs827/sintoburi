@@ -158,7 +158,7 @@ public class UtilJwt extends JwtConfig {
 		return jwt;
 	}
 	
-	public String authenticateByToken(String token){
+	public String authenticateByToken(String token) {
 		Claims claims = null;
 		try {
 			claims = Jwts.parserBuilder()
@@ -168,12 +168,12 @@ public class UtilJwt extends JwtConfig {
 					.getBody();
 		}  catch (IllegalArgumentException ex){
 //          log.error("Unable to get JWT token", ex);
-      	System.out.println("[에러 발생] : IllegalArgumentException e");
-      } catch (ExpiredJwtException ex){
+//          System.out.println("[에러 발생] : IllegalArgumentException e");
+//      } catch (ExpiredJwtException ex){
 //          log.error("JWT Token has expired", ex);
 //          throw new ExpiredJwtException("JWT Token has expired");
-      	System.out.println("[에러 발생] : ExpiredJwtException e");
-      }
+			System.out.println("[에러 발생] : ExpiredJwtException e");
+		}
 
 		return claims.getSubject();
 	}

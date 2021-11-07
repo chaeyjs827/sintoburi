@@ -29,6 +29,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
         System.out.println("[jwt] : " + jwt);
 
+        // JWT 유효성 검사
+        System.out.println("authenticate result : " + utilJwt.authenticateByToken(jwt));
 //        Claims claims = utilJwt.tempGetClaimsByToken(jwt);
 //        System.out.println("[id] : " + claims.getId());
 //        System.out.println("[issuer] : " + claims.getIssuer());

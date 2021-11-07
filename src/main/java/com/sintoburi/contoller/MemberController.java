@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
@@ -28,7 +29,7 @@ public class MemberController {
 //	public String memberSignUp(MemberDto memberDto) {
 	@PostMapping("/member/sign-up")
 	@ResponseBody
-	public void memberSignUp(@RequestBody MemberDto memberDto) {
+	public ResponseEntity memberSignUp(@RequestBody MemberDto memberDto) {
 		try {
 			// 유저 정보 유효성검사
 
@@ -36,11 +37,15 @@ public class MemberController {
 			// 2. 이메일 중복 확인(탈퇴 계정 포함)
 
 			// To-Do Oauth계정 인증 내용
+//			return ResponseEntity.ok().body(ApiResponse.builder()
+//					.data(null)
+//					.build());
 			memberService.memberSignup(memberDto);
 //			return "hello";
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	@GetMapping("/member/find-by-id")
