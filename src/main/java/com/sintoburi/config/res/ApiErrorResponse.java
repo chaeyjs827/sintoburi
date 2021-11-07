@@ -1,5 +1,9 @@
 package com.sintoburi.config.res;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * @author seongnamfc
  * @package com.sintoburi.config.res
@@ -7,5 +11,12 @@ package com.sintoburi.config.res;
  * @description
  * @date 2021/11/07
  */
-public class ApiErrorResponse {
+@Getter
+@ToString
+@Builder
+public class ApiErrorResponse<T> {
+
+    private int code;
+    private T data;
+
 }

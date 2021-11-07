@@ -3,6 +3,7 @@ package com.sintoburi.contoller;
 import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
+import com.sintoburi.config.res.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,10 @@ public class MemberController {
 			// 2. 이메일 중복 확인(탈퇴 계정 포함)
 
 			// To-Do Oauth계정 인증 내용
-//			return ResponseEntity.ok().body(ApiResponse.builder()
-//					.data(null)
-//					.build());
 			memberService.memberSignup(memberDto);
+			return ResponseEntity.ok().body(ApiResponse.builder()
+					.data(null)
+					.build());
 //			return "hello";
 		} catch(Exception e) {
 			e.printStackTrace();
