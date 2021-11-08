@@ -20,12 +20,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor()).order(0);
+//        registry.addInterceptor(authInterceptor()).order(0);
     }
 
-    @Bean
-    public AuthInterceptor authInterceptor() {
-        return new AuthInterceptor();
-    }
+//    @Bean
+//    public AuthInterceptor authInterceptor() {
+//        return new AuthInterceptor();
+//    }
 
 }
