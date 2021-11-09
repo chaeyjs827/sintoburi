@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
+@Slf4j
 public class UtilJwt extends JwtConfig {
 	
 	// 30( 1000 * 60초 * 30분) = 30분
@@ -70,7 +72,7 @@ public class UtilJwt extends JwtConfig {
 		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
 		String rt = createToken(JwtConst.REFRESH_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
-		
+		log.debug("create jwt token");
 		
 		/*
 		 	{

@@ -3,6 +3,7 @@ package com.sintoburi.contoller;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class OAuthController {
 
 	@Autowired
@@ -30,12 +32,13 @@ public class OAuthController {
     @ResponseBody
 	public Map<String, String> oauthLogin(@RequestParam String username,
 									@RequestParam String password) {
-		
-		String jwt = utilJwt.createJwtToken("log-test");	
-		
+		log.debug("controller 실행");
+		String jwt = utilJwt.createJwtToken("log-test");
+
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
-		
+
+		log.debug("return");
 		return result;
 	}
 	
