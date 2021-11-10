@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sintoburi.config.JwtConfig;
 import com.sintoburi.service.JwtService;
 import com.sitoburi.constant.JwtConst;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /*
  * Jwt 토큰의 라이프 사이클
@@ -160,24 +156,28 @@ public class UtilJwt extends JwtConfig {
 		return jwt;
 	}
 	
-	public String authenticateByToken(String token) {
+	public Boolean authenticateByToken(String token) {
 		Claims claims = null;
+		Boolean result = false;
 		try {
 			claims = Jwts.parserBuilder()
 					.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
+
 		}  catch (IllegalArgumentException ex){
-//          log.error("Unable to get JWT token", ex);
+          log.error("[에러 발생] Unable to get JWT token !!");
 //          System.out.println("[에러 발생] : IllegalArgumentException e");
-//      } catch (ExpiredJwtException ex){
-//          log.error("JWT Token has expired", ex);
+		} catch (ExpiredJwtException ex){
+          log.error("[에러 발생] : ExpiredJwtException !!");
 //          throw new ExpiredJwtException("JWT Token has expired");
-			System.out.println("[에러 발생] : ExpiredJwtException e");
+//			System.out.println("[에러 발생] : ExpiredJwtException !!");
+		} catch (UnsupportedJwtException ex) {
+			log.error("[에러 발생] UnsupportedJwtException !!");
 		}
 
-		return claims.getSubject();
+		return result;
 	}
 
 	public Claims getClaimsByToken(String token) {
