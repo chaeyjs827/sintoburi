@@ -1,17 +1,20 @@
 package com.sintoburi.config;
 
+import com.sintoburi.config.provider.JwtTokenProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -26,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .and()
 		// h2-console 페이지 처리
 			.csrf().disable()
+//			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.headers().frameOptions().disable();;
 	}
 	/*
