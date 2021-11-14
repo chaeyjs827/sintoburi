@@ -167,32 +167,42 @@ public class UtilJwt extends JwtConfig {
 		Claims claims = null;
 		Boolean result = false;
 
+//		String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger_fuck";
+		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+		String tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
+		// last check
+		String last_tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
+
 		try {
 			claims = Jwts.parserBuilder()
-					.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+					.setSigningKey(DatatypeConverter.parseBase64Binary(jerrySecretKey))
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
 
-			String jerrySecretKey = "쉬바 도대체 왜 앙대능교ㅠㅠ";
-
 		} catch (IllegalArgumentException ex){
 			log.error("[에러 발생] Unable to get JWT token : JWT claims이 비어있음!!");
 			log.error(ex.getMessage());
+			ex.printStackTrace();
 		} catch (ExpiredJwtException ex){
 			log.error("[에러 발생] : ExpiredJwtException : JWT 유효기간이 초과됨!!");
 			log.error(ex.getMessage());
+			ex.printStackTrace();
 		} catch (UnsupportedJwtException ex) {
 			log.error("[에러 발생] UnsupportedJwtException : 예상하는 형식과 일치하지 않는 특정 형식의 JWT!!");
 			log.error(ex.getMessage());
+			ex.printStackTrace();
 		} catch (MalformedJwtException ex) {
 			log.error("[에러 발생] MalformedJwtException : JWT가 올바르게 구성되지 않았음!!");
 			log.error(ex.getMessage());
+			ex.printStackTrace();
 		} catch (SignatureException ex) {
 			log.error("[에러 발생] SignatureException : JWT 기존 서명의 Signature가 확인되지 않음!!");
 			log.error(ex.getMessage());
+			ex.printStackTrace();
 		}
-
 
 		return result;
 	}

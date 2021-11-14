@@ -67,7 +67,12 @@ public class OAuthController {
 	@GetMapping(value = "/oauth/decode-jwt")
 	@ResponseBody
 	public ResponseEntity oauthDecodeJwt(@RequestParam String jwt) {
+
+		// jwt 토큰 타입은 정형화된 형태가 아님.. 그래서 decode를 해줘야함
 		JwtToken jwtToken = utilJwt.decodeJwt(jwt);
+
+		// access-token 유효성 검사
+		Boolean authenticateToken = utilJwt.authenticateByToken(jwtToken.getPayload().getAt());
 
 //		Map<String, Object> payload = result.get("payload");
 
