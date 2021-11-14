@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sintoburi.config.res.ApiResponse;
+import com.sintoburi.model.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,10 +66,17 @@ public class OAuthController {
 
 	@GetMapping(value = "/oauth/decode-jwt")
 	@ResponseBody
-	public ResponseEntity oauthDecodeJwt(@RequestParam String token) {
-		Map<String, Object> result = utilJwt.decodeJwt(token);
+	public ResponseEntity oauthDecodeJwt(@RequestParam String jwt) {
+		JwtToken jwtToken = utilJwt.decodeJwt(jwt);
+
+//		Map<String, Object> payload = result.get("payload");
+
+//		result.get("payload").
+//		String at = result.get("at") == null ? "" : (String) result.get("a");
+//		utilJwt.authenticateByToken(at);
+
 		return ResponseEntity.ok().body(ApiResponse.builder()
-				.data(result)
+				.data(jwtToken)
 				.build());
 	}
 	
