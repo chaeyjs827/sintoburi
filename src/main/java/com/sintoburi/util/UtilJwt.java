@@ -2,12 +2,13 @@ package com.sintoburi.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -182,6 +183,7 @@ public class UtilJwt extends JwtConfig {
 
 			String jerrySecretKey = "쉬바 도대체 왜 앙대능교ㅠㅠ";
 
+			/*
 			Jwts.parserBuilder()
 					.setSigningKey(jerrySecretKey.getBytes(StandardCharsets.UTF_8))
 //                    .setSigningKey(base64SecretBytes)
@@ -192,6 +194,7 @@ public class UtilJwt extends JwtConfig {
 //                    .parseClaimsJws(jwt)
 					.parseClaimsJws(token)
 					.getBody();
+			*/
 
 		} catch (IllegalArgumentException ex){
 			log.error("[에러 발생] Unable to get JWT token : JWT claims이 비어있음!!");
@@ -220,6 +223,34 @@ public class UtilJwt extends JwtConfig {
 //				.build()
 //				.
 		return null;
+	}
+
+	public Map<String, Object> decodeJwt(String jwt) {
+		String[] chunks = jwt.split("\\.");
+		Base64.Decoder decoder = Base64.getDecoder();
+
+		String decodedHeader = new String(decoder.decode(chunks[0]));
+		String decodedPayload = new String(decoder.decode(chunks[1]));
+		String decodedVerifySignature = new String(decoder.decode(chunks[2]));
+
+		log.debug("[header] : " + decodedHeader);
+		log.debug("[payload] : " + decodedPayload);
+		log.debug("[verify signature] : " + decodedVerifySignature);
+
+		Map<String, Object> result = new HashMap<>();
+
+		Map<String, Object> header = new Gson().fromJson(
+				decodedHeader, new TypeToken<HashMap<String, Object>>() {}.getType()
+		);
+		Map<String, Object> payload = new Gson().fromJson(
+				decodedPayload, new TypeToken<HashMap<String, Object>>() {}.getType()
+		);
+
+		result.put("header", header);
+		result.put("payload", payload);
+		result.put("verifySignature", decodedVerifySignature);
+
+		return result;
 	}
 
 	public Claims tempGetClaimsByToken(String token) {

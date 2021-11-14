@@ -62,6 +62,15 @@ public class OAuthController {
 				.data(result)
 				.build());
 	}
+
+	@GetMapping(value = "/oauth/decode-jwt")
+	@ResponseBody
+	public ResponseEntity oauthDecodeJwt(@RequestParam String token) {
+		Map<String, Object> result = utilJwt.decodeJwt(token);
+		return ResponseEntity.ok().body(ApiResponse.builder()
+				.data(result)
+				.build());
+	}
 	
 	@GetMapping(value = "/oauth/getClaimsByToken")
 	@ResponseBody
