@@ -1,9 +1,11 @@
 package com.sintoburi.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.sintoburi.mapper.MemberMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,19 +20,24 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class MemberService {
 
 	private MemberRepository memberRepository;
 	
 	private UtilLogger utilLogger;
 	
 	@Transactional 
-	public Long userSignup(MemberDto memberDto) {
+	public Long memberSignup(MemberDto memberDto) {
+		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
+
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-		
+		memberEntity.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+
+		memberEntity.setCreatedDate(LocalDateTime.now());
+		memberEntity.setUpdatedDate(LocalDateTime.now());
+
 		try {
-			memberRepository.save(memberDto.toEntity());
+			memberRepository.save(memberEntity);
 //			return 1L;
 			
 		} catch(DataAccessException ex) {
@@ -40,7 +47,7 @@ public class UserService {
 		
 //		return memberRepository.save(memberDto.toEntity()).getId();
 	}
-	
+
 	@Transactional
 	public Optional<MemberEntity> getMemberByUsername(String username) {
 		return memberRepository.findByUsername(username);
@@ -69,5 +76,11 @@ public class UserService {
 				.build();
 		memberRepository.save(entity);
 		return null;
+	}
+
+	@Transactional
+	public Boolean checkMember(String username) {
+		Boolean result = memberRepository.countByUsername(username) <= 0 ? true : false;
+		return true;
 	}
 }

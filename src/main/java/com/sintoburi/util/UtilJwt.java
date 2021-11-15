@@ -1,12 +1,21 @@
 package com.sintoburi.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.validation.Payload;
 import javax.xml.bind.DatatypeConverter;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sintoburi.model.JwtToken;
+import com.sintoburi.model.TokenHeader;
+import com.sintoburi.model.TokenPayload;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sintoburi.config.JwtConfig;
 import com.sintoburi.service.JwtService;
 import com.sitoburi.constant.JwtConst;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /*
  * Jwt 토큰의 라이프 사이클
@@ -49,6 +53,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
+@Slf4j
 public class UtilJwt extends JwtConfig {
 	
 	// 30( 1000 * 60초 * 30분) = 30분
@@ -62,7 +67,7 @@ public class UtilJwt extends JwtConfig {
 	@Autowired
 	private JwtService jwtService;
 	
-	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger";
+	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger_fuck";
 
 	@Transactional
 	public String createJwtToken(String username) {
@@ -70,7 +75,7 @@ public class UtilJwt extends JwtConfig {
 		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
 		String rt = createToken(JwtConst.REFRESH_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
-		
+		log.debug("create jwt token");
 		
 		/*
 		 	{
@@ -158,27 +163,84 @@ public class UtilJwt extends JwtConfig {
 		return jwt;
 	}
 	
-	public String authenticateByToken(String token){
+	public Boolean authenticateByToken(String token) {
 		Claims claims = null;
+		Boolean result = false;
+
+//		String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger_fuck";
+		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+		String tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
+		// last check
+		String last_tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
+
 		try {
 			claims = Jwts.parserBuilder()
-					.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+					.setSigningKey(DatatypeConverter.parseBase64Binary(jerrySecretKey))
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
-		}  catch (IllegalArgumentException ex){
-//          log.error("Unable to get JWT token", ex);
-      	System.out.println("[에러 발생] : IllegalArgumentException e");
-      } catch (ExpiredJwtException ex){
-//          log.error("JWT Token has expired", ex);
-//          throw new ExpiredJwtException("JWT Token has expired");
-      	System.out.println("[에러 발생] : ExpiredJwtException e");
-      }
 
-		return claims.getSubject();
+		} catch (IllegalArgumentException ex){
+			log.error("[에러 발생] Unable to get JWT token : JWT claims이 비어있음!!");
+			log.error(ex.getMessage());
+			ex.printStackTrace();
+		} catch (ExpiredJwtException ex){
+			log.error("[에러 발생] : ExpiredJwtException : JWT 유효기간이 초과됨!!");
+			log.error(ex.getMessage());
+			ex.printStackTrace();
+		} catch (UnsupportedJwtException ex) {
+			log.error("[에러 발생] UnsupportedJwtException : 예상하는 형식과 일치하지 않는 특정 형식의 JWT!!");
+			log.error(ex.getMessage());
+			ex.printStackTrace();
+		} catch (MalformedJwtException ex) {
+			log.error("[에러 발생] MalformedJwtException : JWT가 올바르게 구성되지 않았음!!");
+			log.error(ex.getMessage());
+			ex.printStackTrace();
+		} catch (SignatureException ex) {
+			log.error("[에러 발생] SignatureException : JWT 기존 서명의 Signature가 확인되지 않음!!");
+			log.error(ex.getMessage());
+			ex.printStackTrace();
+		}
+
+		return result;
 	}
-	
+
 	public Claims getClaimsByToken(String token) {
+//		Claims claims = Jwts.parserBuilder()
+//				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+//				.build()
+//				.
+		return null;
+	}
+
+	public JwtToken decodeJwt(String jwt) {
+		String[] chunks = jwt.split("\\.");
+		Base64.Decoder decoder = Base64.getDecoder();
+
+		String decodedHeader = new String(decoder.decode(chunks[0]));
+		String decodedPayload = new String(decoder.decode(chunks[1]));
+		String decodedVerifySignature = new String(decoder.decode(chunks[2]));
+
+		log.info("[header] : " + decodedHeader);
+		log.info("[payload] : " + decodedPayload);
+		log.info("[verify signature] : " + decodedVerifySignature);
+
+		TokenHeader tokenHeader = new Gson().fromJson(
+				decodedHeader, new TypeToken<TokenHeader>() {}.getType()
+		);
+
+		TokenPayload tokenPayload = new Gson().fromJson(
+				decodedPayload, new TypeToken<TokenPayload>() {}.getType()
+		);
+
+		JwtToken decodedJwt = new JwtToken(tokenHeader, tokenPayload, decodedVerifySignature);
+
+		return decodedJwt;
+	}
+
+	public Claims tempGetClaimsByToken(String token) {
 		Claims claims = Jwts.parserBuilder()
 				.setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
 				.build()

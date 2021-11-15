@@ -8,4 +8,6 @@ import com.sintoburi.entity.MemberEntity;
 
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 	Optional<MemberEntity> findByUsername(String username);
+	Long countByEmail(String email);
+	Long countByUsername(String username);
 }

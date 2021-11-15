@@ -2,17 +2,15 @@ package com.sintoburi.contoller;
 
 import java.util.Optional;
 
+import com.sintoburi.auth.AuthRequired;
+import com.sintoburi.config.res.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
-import com.sintoburi.service.UserService;
+import com.sintoburi.service.MemberService;
 import com.sintoburi.util.UtilJwt;
 
 import lombok.AllArgsConstructor;
@@ -23,20 +21,37 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 
 	@Autowired
-	private UserService memberService;
+	private MemberService memberService;
 	
 	@Autowired
 	private UtilJwt utilJwt;
 	
-	@GetMapping("/member/signup")
+//	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
+//	public String memberSignUp(MemberDto memberDto) {
+	@PostMapping("/member/sign-up")
 	@ResponseBody
-	public String userSignup(MemberDto memberDto) {
-		memberService.userSignup(memberDto);
-		return "hello";
+	public ResponseEntity memberSignUp(@RequestBody MemberDto memberDto) {
+		try {
+			// 유저 정보 유효성검사
+
+			// 1. 아이디 중복 확인(탈퇴 계정 포함)
+			// 2. 이메일 중복 확인(탈퇴 계정 포함)
+
+			// To-Do Oauth계정 인증 내용
+			memberService.memberSignup(memberDto);
+			return ResponseEntity.ok().body(ApiResponse.builder()
+					.data(null)
+					.build());
+//			return "hello";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
-	@GetMapping("/member/findById")
+	@GetMapping("/member/find-by-id")
 	@ResponseBody
+	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
@@ -59,16 +74,29 @@ public class MemberController {
 		//블락 유저 검증 로직
 		
 		//
-		
+
+		// 유저 존재 여부 확인
+
 		
 		// 유저 정보 유효성 검증 이후 jwt 토큰 생성
-		
-		String jwt = utilJwt.createJwtToken(username);
-		
-		return memberService.getMemberByUsername(username);
+		Boolean testBoolean = memberService.checkMember(username);
+//		if(memberService.checkMember(username)) {
+//			System.out.println("유저 없음");
+//		}
+
+		if(testBoolean) {
+			return null;
+//			return Optional<MemberEntity.builder()
+//					.email("값이 없수광")
+//					.build()>;
+		} else {
+			String jwt = utilJwt.createJwtToken(username);
+			return memberService.getMemberByUsername(username);
+		}
+
 	}
 	
-	@PostMapping("/user/signUp")
+	@PostMapping("/member/sign-up-test")
 	@ResponseBody
 	public String userSignUp(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
 		memberService.userSignUp(username, email, password);

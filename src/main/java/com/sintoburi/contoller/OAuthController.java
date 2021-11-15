@@ -3,7 +3,11 @@ package com.sintoburi.contoller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sintoburi.config.res.ApiResponse;
+import com.sintoburi.model.JwtToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sintoburi.util.UtilJwt;
-import com.sintoburi.util.UtilRedis;
 
 import io.jsonwebtoken.Claims;
 
@@ -22,6 +25,7 @@ import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class OAuthController {
 
 	@Autowired
@@ -31,12 +35,13 @@ public class OAuthController {
     @ResponseBody
 	public Map<String, String> oauthLogin(@RequestParam String username,
 									@RequestParam String password) {
-		
-		String jwt = utilJwt.createJwtToken("log-test");	
-		
+		log.debug("controller 실행");
+		String jwt = utilJwt.createJwtToken("log-test");
+
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("jwt", jwt);
-		
+
+		log.debug("return");
 		return result;
 	}
 	
@@ -52,15 +57,38 @@ public class OAuthController {
 	
 	@GetMapping(value = "/oauth/authenticate")
 	@ResponseBody
-	public String oauthAuthenticate(@RequestParam String token) {
-		String result = utilJwt.authenticateByToken(token);
-		return result;
+	public ResponseEntity oauthAuthenticate(@RequestParam String token) {
+		Boolean result = utilJwt.authenticateByToken(token);
+		return ResponseEntity.ok().body(ApiResponse.builder()
+				.data(result)
+				.build());
+	}
+
+	@GetMapping(value = "/oauth/decode-jwt")
+	@ResponseBody
+	public ResponseEntity oauthDecodeJwt(@RequestParam String jwt) {
+
+		// jwt 토큰 타입은 정형화된 형태가 아님.. 그래서 decode를 해줘야함
+		JwtToken jwtToken = utilJwt.decodeJwt(jwt);
+
+		// access-token 유효성 검사
+		Boolean authenticateToken = utilJwt.authenticateByToken(jwtToken.getPayload().getAt());
+
+//		Map<String, Object> payload = result.get("payload");
+
+//		result.get("payload").
+//		String at = result.get("at") == null ? "" : (String) result.get("a");
+//		utilJwt.authenticateByToken(at);
+
+		return ResponseEntity.ok().body(ApiResponse.builder()
+				.data(jwtToken)
+				.build());
 	}
 	
 	@GetMapping(value = "/oauth/getClaimsByToken")
 	@ResponseBody
 	public Claims getClaimsByToken(@RequestParam String token) {
-		Claims result = utilJwt.getClaimsByToken(token);
+		Claims result = utilJwt.tempGetClaimsByToken(token);
 		return result;
 	}
 }
