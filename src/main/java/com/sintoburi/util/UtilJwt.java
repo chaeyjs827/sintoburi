@@ -1,7 +1,7 @@
 package com.sintoburi.util;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import java.security.*;
 import java.util.*;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -17,12 +17,16 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
 import com.sintoburi.service.JwtService;
 import com.sitoburi.constant.JwtConst;
+import org.springframework.web.client.RestTemplate;
 
 /*
  * Jwt 토큰의 라이프 사이클
@@ -60,7 +64,14 @@ public class UtilJwt extends JwtConfig {
 	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;	
 	// 30일( 1000 * 60초 * 60초 * 24시간 * 30일) = 30일
 	private long REFRESH_TOKEN_EXP = 1000 * 60l * 60l * 24l * 30;
-	
+
+	//    public static String jerrySecretKey = "zkUIXWt2yv3QzK3elxJh8dsAiWjGqKmV";
+	public static String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+	public static String tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
+	// last check
+	public static String last_tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
+
 	@Autowired
 	private UtilRedis utilRedis;
 	
@@ -112,7 +123,19 @@ public class UtilJwt extends JwtConfig {
 		utilRedis.setToken(username, jwt);
 		return jwt;
 	}
-	
+
+	private Map<String, Object> getRSAKeys() throws Exception {
+		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(2048);
+		KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		PrivateKey privateKey = keyPair.getPrivate();
+		PublicKey publicKey = keyPair.getPublic();
+		Map<String, Object> keys = new HashMap<String, Object>();
+		keys.put("private", privateKey);
+		keys.put("public", publicKey);
+		return keys;
+	}
+
 	private String createToken(String tokenName, long expTime) {
 		if(expTime <= 0) {
 			throw new RuntimeException("Expired time must be greater than 0");
@@ -174,10 +197,22 @@ public class UtilJwt extends JwtConfig {
 		// last check
 		String last_tempSecretKey = "bdQULuaX6xST06O66QelgfWH5gatw4IQBAFZM0YN";
 
+		log.info("[generated keys]");
+		Map<String, Object> rsaKeys = null;
+		try {
+			rsaKeys = getRSAKeys();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		PublicKey publicKey = (PublicKey) rsaKeys.get("public");
+		PrivateKey privateKey = (PrivateKey) rsaKeys.get("private");
+		log.info("[generated keys]");
 
 		try {
 			claims = Jwts.parserBuilder()
 					.setSigningKey(DatatypeConverter.parseBase64Binary(jerrySecretKey))
+//					.setSigningKey(privateKey)
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
@@ -247,5 +282,34 @@ public class UtilJwt extends JwtConfig {
 				.parseClaimsJws(token)
 				.getBody();
 		return claims;
+	}
+
+	public String refreshJwt(String jwt) {
+		JwtVO jwtVO = decodeJwt(jwt);
+		// @Todo 솔드아웃 서버로 토큰 갱신 요청 후 값 전달
+
+		// @Todo 인증서버 호출 부분
+
+		RestTemplate resTemplate = new RestTemplate();
+		final String OAUTH_TOKEN_URL = "nginx/oauth/token";
+//        final String header = "";
+
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_JSON);
+		header.setCacheControl("no-cache");
+
+		JSONObject params = new JSONObject();
+		params.put("grant_type", "refresh_token");
+		params.put("refresh_token", jwtVO.getPayload().getRt());
+		params.put("client_id", "2");
+		params.put("client_secret", "JqUp5iQDultQAggnL01VLMOg8El2BjElaAHw84cH");
+		params.put("scope", "");
+
+		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
+
+		String response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
+//        ResponseEntity<String> response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
+
+		return "";
 	}
 }
