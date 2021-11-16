@@ -1,18 +1,16 @@
 package com.sintoburi.util;
 
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.*;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.validation.Payload;
 import javax.xml.bind.DatatypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sintoburi.model.JwtToken;
-import com.sintoburi.model.TokenHeader;
-import com.sintoburi.model.TokenPayload;
+import com.sintoburi.dto.auth.JwtDto;
+import com.sintoburi.dto.auth.JwtHeaderDto;
+import com.sintoburi.dto.auth.JwtPayloadDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -250,7 +248,7 @@ public class UtilJwt extends JwtConfig {
 		return null;
 	}
 
-	public JwtToken decodeJwt(String jwt) {
+	public JwtDto decodeJwt(String jwt) {
 		String[] chunks = jwt.split("\\.");
 		Base64.Decoder decoder = Base64.getDecoder();
 
@@ -262,15 +260,15 @@ public class UtilJwt extends JwtConfig {
 		log.info("[payload] : " + decodedPayload);
 		log.info("[verify signature] : " + decodedVerifySignature);
 
-		TokenHeader tokenHeader = new Gson().fromJson(
-				decodedHeader, new TypeToken<TokenHeader>() {}.getType()
+		JwtHeaderDto tokenHeader = new Gson().fromJson(
+				decodedHeader, new TypeToken<JwtHeaderDto>() {}.getType()
 		);
 
-		TokenPayload tokenPayload = new Gson().fromJson(
-				decodedPayload, new TypeToken<TokenPayload>() {}.getType()
+		JwtPayloadDto tokenPayload = new Gson().fromJson(
+				decodedPayload, new TypeToken<JwtPayloadDto>() {}.getType()
 		);
 
-		JwtToken decodedJwt = new JwtToken(tokenHeader, tokenPayload, decodedVerifySignature);
+		JwtDto decodedJwt = new JwtDto(tokenHeader, tokenPayload, decodedVerifySignature);
 
 		return decodedJwt;
 	}
@@ -285,7 +283,7 @@ public class UtilJwt extends JwtConfig {
 	}
 
 	public String refreshJwt(String jwt) {
-		JwtVO jwtVO = decodeJwt(jwt);
+		JwtDto jwtDto = decodeJwt(jwt);
 		// @Todo 솔드아웃 서버로 토큰 갱신 요청 후 값 전달
 
 		// @Todo 인증서버 호출 부분
@@ -298,16 +296,16 @@ public class UtilJwt extends JwtConfig {
 		header.setContentType(MediaType.APPLICATION_JSON);
 		header.setCacheControl("no-cache");
 
-		JSONObject params = new JSONObject();
-		params.put("grant_type", "refresh_token");
-		params.put("refresh_token", jwtVO.getPayload().getRt());
-		params.put("client_id", "2");
-		params.put("client_secret", "JqUp5iQDultQAggnL01VLMOg8El2BjElaAHw84cH");
-		params.put("scope", "");
+//		JSONObject params = new JSONObject();
+//		params.put("grant_type", "refresh_token");
+//		params.put("refresh_token", jwtDto.getPayload().getRt());
+//		params.put("client_id", "2");
+//		params.put("client_secret", "JqUp5iQDultQAggnL01VLMOg8El2BjElaAHw84cH");
+//		params.put("scope", "");
 
-		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
+//		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
 
-		String response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
+//		String response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
 //        ResponseEntity<String> response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
 
 		return "";

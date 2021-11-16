@@ -1,4 +1,4 @@
-package com.sintoburi.model;
+package com.sintoburi.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class TokenPayload {
+public class JwtPayloadDto {
     private String at;
     private String rt;
     private String id;
