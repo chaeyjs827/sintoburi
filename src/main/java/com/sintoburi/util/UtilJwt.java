@@ -310,4 +310,29 @@ public class UtilJwt extends JwtConfig {
 
 		return "";
 	}
+
+
+//	// 테스트용
+//	public String login(String username, String password) {
+//		RestTemplate restTemplate = new RestTemplate();
+//
+//		HttpHeaders header = new HttpHeaders();
+//		header.setContentType(MediaType.APPLICATION_JSON);
+//		header.setCacheControl("no-cache");
+//
+//		// 로그인 테스트
+//		JSONObject params = new JSONObject();
+//		params.put("grant_type", "password");
+//		params.put("client_id", "2");
+//		params.put("client_secret", "150aASOAjh3YRHpbpwZT4thbkI4DBnuc79rTeNqQ");
+//		params.put("username", username);
+//		params.put("password", password);
+//
+//		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
+//
+//		String response = restTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
+////        ResponseEntity<String> response = restTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
+//
+//		return response;
+//	}
 }
