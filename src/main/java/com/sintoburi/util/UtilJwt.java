@@ -1,8 +1,10 @@
 package com.sintoburi.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.*;
 
+import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
@@ -11,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sintoburi.dto.auth.JwtDto;
 import com.sintoburi.dto.auth.JwtHeaderDto;
 import com.sintoburi.dto.auth.JwtPayloadDto;
+import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,19 +40,19 @@ import org.springframework.web.client.RestTemplate;
  *  	- ct(created-time)
  *  	- iat(issued-at-time)
  *  	- exp(expired)
- * 
+ *
  * 1. 로그인	-> Access-Token
  * 			-> Refresh-Token(DB에 저장)
  * 			두개 모두 쿠키게 저장됨
- * 
+ *
  * 2. API 요청을 하면 토큰의 유효성 검사를 하는 미들웨어가 필요함
  * 		case1 : access-token(만료), refresh-token(만료) => 에러->로그인 다시해야함
  * 		case2 : access-token(유효), refresh-token(만료) => refresh-token 재발급
  * 		case3 :	access-token(만료), refresh-token(유효) => access-token 재발급
  * 		case4 : access-token(만료), refresh-token(만료) => 다음 로직 실행
- * 
+ *
  * 3. 로그아웃 하면 access-token과 refresh-token 모두 만료
- * 
+ *
  * 4. 발급된 토큰을 request-header에 담아 API 요청을 하면 됨;
  */
 
@@ -57,9 +60,9 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @Slf4j
 public class UtilJwt extends JwtConfig {
-	
+
 	// 30( 1000 * 60초 * 30분) = 30분
-	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;	
+	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;
 	// 30일( 1000 * 60초 * 60초 * 24시간 * 30일) = 30일
 	private long REFRESH_TOKEN_EXP = 1000 * 60l * 60l * 24l * 30;
 
@@ -72,26 +75,26 @@ public class UtilJwt extends JwtConfig {
 
 	@Autowired
 	private UtilRedis utilRedis;
-	
+
 	@Autowired
 	private JwtService jwtService;
-	
+
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger_fuck";
 
 	@Transactional
 	public String createJwtToken(String username) {
-	
+
 		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
 		String rt = createToken(JwtConst.REFRESH_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
 
 		log.debug("create jwt token");
-		
+
 		/*
 		 	{
 			  "typ": "JWT",
 			  # "alg": "RS256"
-			} 
-		  
+			}
+
 		  {
 			  "at": "at",
 			  "rt": "rt",
@@ -102,10 +105,10 @@ public class UtilJwt extends JwtConfig {
 			  # "exp": 1635384912
 }
 		 */
-		
+
 		long now = System.currentTimeMillis();
 		Date issuedAt = new Date();
-		
+
 		// jwt의 redis 메카니즘은 확인 후 업데이트 해야함. 지금은 redis 연동 테스트 목적으로 개발됨
 //		utilRedis.setToken(tokenName, jwt);
 		String jwt = Jwts.builder()
@@ -114,10 +117,10 @@ public class UtilJwt extends JwtConfig {
 				.claim(JwtConst.ACCESS_TOKEN.getShortName(), at)
 				.claim(JwtConst.ACCESS_TOKEN.getShortName(), rt)
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
-				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
+				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미
 				.setExpiration(new Date(now+(ACCESS_TOKEN_EXP)))		// 토큰 만료시간
 				.compact();
-		
+
 		utilRedis.setToken(username, jwt);
 		return jwt;
 	}
@@ -139,10 +142,10 @@ public class UtilJwt extends JwtConfig {
 			throw new RuntimeException("Expired time must be greater than 0");
 		}
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;	// 토큰 암호화 알고리즘
-		
+
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);	// Binary Data를 Text로 바꿈
 		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());	// 암호화된 key
-		
+
 		long now = System.currentTimeMillis();
 		Date issuedAt = new Date(now);
 		Date exp = new Date(now+expTime);
@@ -152,7 +155,7 @@ public class UtilJwt extends JwtConfig {
 			   "typ": "JWT",
 			   "alg": "RS256"
 			}
-			
+
 			{
 			  # "aud": "2",
 			  "jti": "483f2c50032f5b9e6f7888a462fab8ba386285631c3365fca3d8f22fcf2203d30d480af819a08265",
@@ -163,19 +166,19 @@ public class UtilJwt extends JwtConfig {
 			  # "scopes": []
 			}
 		 */
-		
+
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", tokenName)
 				.setId(UUID.randomUUID().toString())	// jti
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
-				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미		
+				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미
 				.signWith(signingKey, signatureAlgorithm)	// 토큰 암호화 알고리즘
 				.setExpiration((exp))		// 토큰 만료시간
 //				.setAudience("");	// audience는 토큰을 사용할 수신자인데.. 정확히 어떻게 사용 하는지 파악 필
 //				.setSubject(tokenName)	// 뭔지 아직 파악 안됨
 				.compact();
-		
-		
+
+
 		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
 			jwtService.saveAccessToken(jwt, 999, exp, false);
 		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
@@ -183,7 +186,32 @@ public class UtilJwt extends JwtConfig {
 		}
 		return jwt;
 	}
-	
+
+	public void testAuthenticateByToken(String token) {
+		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+
+	}
+
+	private String hmacSha256(String data, String secret) {
+//		try {
+//
+//			byte[] hash = secret.getBytes(StandardCharsets.UTF_8);
+//			Mac sha256Hmac = Mac.getInstance("HmacSHA256");
+//			SecretKeySpec secretKey = new SecretKeySpec(hash, "HmacSHA256");
+//			sha256Hmac.init(secretKey);
+//
+//			byte[] signedBytes = sha256Hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+//
+//			return encode(signedBytes);
+//		} catch (NoSuchAlgorithmException | InvalidKeyException ex) {
+//			Logger.getLogger(JWebToken.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//			return null;
+//		}
+		return null;
+	}
+
+//	signature = hmacSha256(encodedHeader + "." + encode(payload));
+
 	public Boolean authenticateByToken(String token) {
 		Claims claims = null;
 		Boolean result = false;
