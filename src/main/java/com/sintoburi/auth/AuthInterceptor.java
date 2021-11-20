@@ -48,14 +48,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         System.out.println("[jwt] : " + jwt);
 
         // JWT 유효성 검사
-        System.out.println("authenticate result : " + utilJwt.authenticateByToken(jwt));
-//        Claims claims = utilJwt.tempGetClaimsByToken(jwt);
-//        System.out.println("[id] : " + claims.getId());
-//        System.out.println("[issuer] : " + claims.getIssuer());
-//        System.out.println("[subject] : " + claims.getSubject());
-//        System.out.println("[audience] : " + claims.getAudience());
-//        System.out.println("[expiration] : " + claims.getExpiration());
-//        System.out.println("[issuedAt] : " + claims.getIssuedAt());
+        utilJwt.testAuthenticateByToken(jwt);
+
+
+//        System.out.println("authenticate result : " + utilJwt.authenticateByToken(jwt));
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

@@ -13,12 +13,10 @@ import com.google.gson.reflect.TypeToken;
 import com.sintoburi.dto.auth.JwtDto;
 import com.sintoburi.dto.auth.JwtHeaderDto;
 import com.sintoburi.dto.auth.JwtPayloadDto;
-import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -187,10 +185,6 @@ public class UtilJwt extends JwtConfig {
 		return jwt;
 	}
 
-	public void testAuthenticateByToken(String token) {
-		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
-
-	}
 
 //	public String testToken(JwtDto jwtDto) {
 //		return hmacSha256(null, jwtDto.getPayload());
@@ -216,6 +210,7 @@ public class UtilJwt extends JwtConfig {
 	}
 
 //	signature = hmacSha256(encodedHeader + "." + encode(payload));
+
 
 	public Boolean authenticateByToken(String token) {
 		Claims claims = null;
@@ -281,6 +276,33 @@ public class UtilJwt extends JwtConfig {
 		return null;
 	}
 
+	public void testAuthenticateByToken(String token) {
+		log.info("testAuthenticateByToken 실행");
+		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+
+		String[] jwtArray = testDecodeJwt(token);
+		String header = jwtArray[0];
+		String payload = jwtArray[1];
+		String signature = jwtArray[2];
+
+		log.info("header : " + header);
+		log.info("payload : " + payload);
+		log.info("signature : " + signature);
+
+
+		log.info("testAuthenticateByToken 종료");
+	}
+
+	public String[] testDecodeJwt(String jwt) {
+		String[] chunks = jwt.split("\\.");
+		return chunks;
+	}
+
+	public String encodeStringToBase64(String str) {
+//		return str_replace('=', '', strtr(base64_encode($data), '+/', '-_'));
+		return null;
+	}
+
 	public JwtDto decodeJwt(String jwt) {
 		String[] chunks = jwt.split("\\.");
 		Base64.Decoder decoder = Base64.getDecoder();
@@ -329,43 +351,6 @@ public class UtilJwt extends JwtConfig {
 		header.setContentType(MediaType.APPLICATION_JSON);
 		header.setCacheControl("no-cache");
 
-//		JSONObject params = new JSONObject();
-//		params.put("grant_type", "refresh_token");
-//		params.put("refresh_token", jwtDto.getPayload().getRt());
-//		params.put("client_id", "2");
-//		params.put("client_secret", "JqUp5iQDultQAggnL01VLMOg8El2BjElaAHw84cH");
-//		params.put("scope", "");
-
-//		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
-
-//		String response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
-//        ResponseEntity<String> response = resTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
-
 		return "";
 	}
-
-
-//	// 테스트용
-//	public String login(String username, String password) {
-//		RestTemplate restTemplate = new RestTemplate();
-//
-//		HttpHeaders header = new HttpHeaders();
-//		header.setContentType(MediaType.APPLICATION_JSON);
-//		header.setCacheControl("no-cache");
-//
-//		// 로그인 테스트
-//		JSONObject params = new JSONObject();
-//		params.put("grant_type", "password");
-//		params.put("client_id", "2");
-//		params.put("client_secret", "150aASOAjh3YRHpbpwZT4thbkI4DBnuc79rTeNqQ");
-//		params.put("username", username);
-//		params.put("password", password);
-//
-//		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, header);
-//
-//		String response = restTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
-////        ResponseEntity<String> response = restTemplate.postForObject(OAUTH_TOKEN_URL, entity, String.class);
-//
-//		return response;
-//	}
 }
