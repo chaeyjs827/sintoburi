@@ -5,6 +5,7 @@ import java.security.*;
 import java.util.*;
 
 import javax.crypto.Mac;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -199,13 +201,13 @@ public class UtilJwt extends JwtConfig {
 
 			byte[] signedBytes = sha256Hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
 
-			return encode(signedBytes);
+			return encodeStringToBase64(signedBytes);
 		} catch (NoSuchAlgorithmException | InvalidKeyException ex) {
 			return null;
 		}
 	}
 
-	private String encode(byte[] bytes) {
+	private String encodeStringToBase64(byte[] bytes) {
 		return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
 	}
 
@@ -277,30 +279,87 @@ public class UtilJwt extends JwtConfig {
 	}
 
 	public void testAuthenticateByToken(String token) {
+
+		String testPassword = "test비밀번호";
+		String fakePassword = "tes비밀번호";
+		String fakePassword2 = "test비밀번호1";
+		String fakePassword3 = "ttest비밀번호";
+		String fakePassword4 = "est비밀번호";
+
+		String encrypted = BCrypt.hashpw(testPassword, BCrypt.gensalt());
+
+		log.info("encrypted : " + encrypted);
+
+		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(testPassword, encrypted));
+		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword, encrypted));
+		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword2, encrypted));
+		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword3, encrypted));
+		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword4, encrypted));
+
+
+
 		log.info("testAuthenticateByToken 실행");
-		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+//		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
+		String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt이게 되면 안된다니까ㅠㅠㅠ";
+//		String secretKey = "zkUIXWt2yv3QzK3elxJh8dsAiWjGqKmV";
+		String secretKey = "이고ㅓ 되면 바로 운동 간다";
+		String tempSecretyKey = "secret-key";
 
-		String[] jwtArray = testDecodeJwt(token);
-		String header = jwtArray[0];
-		String payload = jwtArray[1];
-		String signature = jwtArray[2];
+		String[] jwtArray = getJwtArray(token);
+		String headerBase64 = jwtArray[0];
+		String payloadBase64 = jwtArray[1];
+		String signatureBase64 = jwtArray[2];
 
-		log.info("header : " + header);
-		log.info("payload : " + payload);
-		log.info("signature : " + signature);
+		log.info("headerBase64 : " + headerBase64);
+		log.info("payloadBase64 : " + payloadBase64);
+		log.info("signatureBase64 : " + signatureBase64);
 
+		String secretKeyBase64 = encodeStringToBase64(jerrySecretKey);
+		log.info("secret-key : " + jerrySecretKey);
+		log.info("secretKeyBase64 : " + secretKeyBase64);
+
+		String verifyString = headerBase64+"."+payloadBase64+"."+secretKeyBase64;
+
+		String payloadDecoded = decodeBase64ToString(payloadBase64);
+		log.info("payloadDecoded = " + payloadDecoded);
+
+		log.info("[verifyString] : " + verifyString);
+
+		String signatureString = decodeBase64ToString(signatureBase64);
+		log.info("[signatureString] : " + signatureString);
+//		String hash = BCrypt.hashpw(signatureString, BCrypt.gensalt());
+//
+//		log.info("[hash] : " + hash);
+
+
+//		if(verifyString.matches(decodeBase64ToString(signatureBase64))) {
+//		if(BCrypt.checkpw(verifyString, hash)) {
+		if(BCrypt.checkpw(verifyString, signatureString)) {
+//		if(BCrypt.checkpw(signatureString, verifyString)) {
+			log.info("일치 합니다.");
+		} else {
+			log.info("일치 하지 않습니다.");
+		}
 
 		log.info("testAuthenticateByToken 종료");
 	}
 
-	public String[] testDecodeJwt(String jwt) {
+    private static byte[] hexify(String string) {
+        return DatatypeConverter.parseHexBinary(string);
+    }
+
+	public String[] getJwtArray(String jwt) {
 		String[] chunks = jwt.split("\\.");
 		return chunks;
 	}
 
 	public String encodeStringToBase64(String str) {
-//		return str_replace('=', '', strtr(base64_encode($data), '+/', '-_'));
-		return null;
+		return Base64.getEncoder().withoutPadding().encodeToString(str.getBytes());
+	}
+
+	public String decodeBase64ToString(String str) {
+		byte[] decodedBytes = Base64.getUrlDecoder().decode(str);
+		return new String(decodedBytes);
 	}
 
 	public JwtDto decodeJwt(String jwt) {

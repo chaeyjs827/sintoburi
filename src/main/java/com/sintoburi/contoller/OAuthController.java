@@ -3,6 +3,7 @@ package com.sintoburi.contoller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
 import com.sintoburi.dto.auth.JwtDto;
 import lombok.extern.slf4j.Slf4j;
@@ -90,5 +91,13 @@ public class OAuthController {
 	public Claims getClaimsByToken(@RequestParam String token) {
 		Claims result = utilJwt.tempGetClaimsByToken(token);
 		return result;
+	}
+
+	@GetMapping(value = "/oauth/test-token")
+	@ResponseBody
+//	@AuthRequired
+	public void getTestToken(@RequestParam String token) {
+		utilJwt.testAuthenticateByToken(token);
+		log.info("have a nice day :) ");
 	}
 }
