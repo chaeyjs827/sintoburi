@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.service.MemberService;
-import com.sintoburi.util.UtilJwt;
+import com.sintoburi.util.JwtAuth;
 
 import lombok.AllArgsConstructor;
 
@@ -24,7 +24,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@Autowired
-	private UtilJwt utilJwt;
+	private JwtAuth utilJwt;
 	
 //	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
 //	public String memberSignUp(MemberDto memberDto) {

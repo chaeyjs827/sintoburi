@@ -1,8 +1,7 @@
 package com.sintoburi.auth;
 
 import com.google.common.net.HttpHeaders;
-import com.sintoburi.util.UtilJwt;
-import io.jsonwebtoken.Claims;
+import com.sintoburi.util.JwtAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private UtilJwt utilJwt;
+    private JwtAuth utilJwt;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

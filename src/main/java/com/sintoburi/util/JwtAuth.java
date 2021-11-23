@@ -5,7 +5,6 @@ import java.security.*;
 import java.util.*;
 
 import javax.crypto.Mac;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
-import com.sintoburi.service.JwtService;
+import com.sintoburi.service.TempJwtService;
 import com.sitoburi.constant.JwtConst;
 import org.springframework.web.client.RestTemplate;
 
@@ -59,7 +58,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @Slf4j
-public class UtilJwt extends JwtConfig {
+public class JwtAuth extends JwtConfig {
 
 	// 30( 1000 * 60초 * 30분) = 30분
 	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;
@@ -77,7 +76,7 @@ public class UtilJwt extends JwtConfig {
 	private UtilRedis utilRedis;
 
 	@Autowired
-	private JwtService jwtService;
+	private TempJwtService jwtService;
 
 	private static final String SECRET_KEY = "test_secret_key_greater_than_256_should_this_be_bigger_fuck";
 
@@ -179,11 +178,11 @@ public class UtilJwt extends JwtConfig {
 				.compact();
 
 
-		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
-			jwtService.saveAccessToken(jwt, 999, exp, false);
-		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
-			jwtService.saveRefreshToken(jwt, exp, false);	// isRevoked 사용 하기 전까지는 false로 저장
-		}
+//		if(tokenName.equals(JwtConst.ACCESS_TOKEN.getShortName())) {
+//			jwtService.saveAccessToken(jwt, 999, exp, false);
+//		} else if(tokenName.equals(JwtConst.REFRESH_TOKEN.getShortName())) {
+//			jwtService.saveRefreshToken(jwt, exp, false);	// isRevoked 사용 하기 전까지는 false로 저장
+//		}
 		return jwt;
 	}
 
@@ -280,6 +279,7 @@ public class UtilJwt extends JwtConfig {
 
 	public void testAuthenticateByToken(String token) {
 
+		/*
 		String testPassword = "test비밀번호";
 		String fakePassword = "tes비밀번호";
 		String fakePassword2 = "test비밀번호1";
@@ -295,7 +295,7 @@ public class UtilJwt extends JwtConfig {
 		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword2, encrypted));
 		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword3, encrypted));
 		log.info("testPassword와 encrypted 비교 : " + BCrypt.checkpw(fakePassword4, encrypted));
-
+		*/
 
 
 		log.info("testAuthenticateByToken 실행");
@@ -314,18 +314,18 @@ public class UtilJwt extends JwtConfig {
 		log.info("payloadBase64 : " + payloadBase64);
 		log.info("signatureBase64 : " + signatureBase64);
 
-		String secretKeyBase64 = encodeStringToBase64(jerrySecretKey);
+		String secretKeyBase64 = encodeBase64(jerrySecretKey);
 		log.info("secret-key : " + jerrySecretKey);
 		log.info("secretKeyBase64 : " + secretKeyBase64);
 
 		String verifyString = headerBase64+"."+payloadBase64+"."+secretKeyBase64;
 
-		String payloadDecoded = decodeBase64ToString(payloadBase64);
+		String payloadDecoded = decodeBase64(payloadBase64);
 		log.info("payloadDecoded = " + payloadDecoded);
 
 		log.info("[verifyString] : " + verifyString);
 
-		String signatureString = decodeBase64ToString(signatureBase64);
+		String signatureString = decodeBase64(signatureBase64);
 		log.info("[signatureString] : " + signatureString);
 //		String hash = BCrypt.hashpw(signatureString, BCrypt.gensalt());
 //
@@ -334,8 +334,8 @@ public class UtilJwt extends JwtConfig {
 
 //		if(verifyString.matches(decodeBase64ToString(signatureBase64))) {
 //		if(BCrypt.checkpw(verifyString, hash)) {
-		if(BCrypt.checkpw(verifyString, signatureString)) {
 //		if(BCrypt.checkpw(signatureString, verifyString)) {
+		if(BCrypt.checkpw(verifyString, signatureString)) {
 			log.info("일치 합니다.");
 		} else {
 			log.info("일치 하지 않습니다.");
@@ -353,11 +353,11 @@ public class UtilJwt extends JwtConfig {
 		return chunks;
 	}
 
-	public String encodeStringToBase64(String str) {
+	public String encodeBase64(String str) {
 		return Base64.getEncoder().withoutPadding().encodeToString(str.getBytes());
 	}
 
-	public String decodeBase64ToString(String str) {
+	public String decodeBase64(String str) {
 		byte[] decodedBytes = Base64.getUrlDecoder().decode(str);
 		return new String(decodedBytes);
 	}
