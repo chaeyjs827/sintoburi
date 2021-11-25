@@ -1,8 +1,7 @@
 package com.sintoburi.auth;
 
 import com.google.common.net.HttpHeaders;
-import com.sintoburi.util.UtilJwt;
-import io.jsonwebtoken.Claims;
+import com.sintoburi.util.JwtAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private UtilJwt utilJwt;
+    private JwtAuth utilJwt;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -48,14 +47,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         System.out.println("[jwt] : " + jwt);
 
         // JWT 유효성 검사
-        System.out.println("authenticate result : " + utilJwt.authenticateByToken(jwt));
-//        Claims claims = utilJwt.tempGetClaimsByToken(jwt);
-//        System.out.println("[id] : " + claims.getId());
-//        System.out.println("[issuer] : " + claims.getIssuer());
-//        System.out.println("[subject] : " + claims.getSubject());
-//        System.out.println("[audience] : " + claims.getAudience());
-//        System.out.println("[expiration] : " + claims.getExpiration());
-//        System.out.println("[issuedAt] : " + claims.getIssuedAt());
+        utilJwt.testAuthenticateByToken(jwt);
+
+
+//        System.out.println("authenticate result : " + utilJwt.authenticateByToken(jwt));
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

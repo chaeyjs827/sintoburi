@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import sun.java2d.loops.FillRect;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +24,7 @@ import java.util.Map;
 
 /**
  * @author seongnamfc
+ *
  * @package com.sintoburi.util
  * @file JwtTokenProvider
  * @description

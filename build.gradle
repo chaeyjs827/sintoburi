@@ -40,6 +40,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-gson:0.11.2'
 	implementation 'junit:junit:4.12'
 
+	// HttpClient for HttpComponentsClientHttpRequestFactory
+	implementation 'org.apache.httpcomponents:httpclient:4.5'
+
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
 	
@@ -54,7 +57,7 @@ dependencies {
 
 	// migrating h2 to mysql(2021.10.07)
 	runtimeOnly('com.h2database:h2')
-	runtimeOnly('mysql:mysql-connector-java')
+	runtimeOnly('mysql:mysql-connector-java:8.0.25')
 
 	// mapstruct(Lombok 사용시 mapstruct먼저 선언 / 아니면 target에 @Builder가 있어도 무시됨)
 	compileOnly 'org.mapstruct:mapstruct:1.4.2.Final'
