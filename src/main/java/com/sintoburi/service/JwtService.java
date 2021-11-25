@@ -1,53 +1,23 @@
 package com.sintoburi.service;
 
-import java.util.Date;
+import com.sintoburi.dto.auth.JwtDto;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.servlet.http.HttpServletRequest;
 
-import com.sintoburi.entity.AccessTokenEntity;
-import com.sintoburi.entity.RefreshTokenEntity;
-import com.sintoburi.repository.AccessTokenRepository;
-import com.sintoburi.repository.RefreshTokenRepository;
+/**
+ * @author seongnamfc
+ * @package com.sintoburi.service
+ * @file JwtService
+ * @description
+ * @date 2021/11/23
+ */
+public interface JwtService {
+    public String getJwtFromRequest(HttpServletRequest request);
 
-@Service
-public class JwtService {
+    public JwtDto parsedJwt(String jwt);
 
-	@Autowired
-	private AccessTokenRepository accessTokenRepository;
+    public Boolean checkJwtValid(String jwt, String authRole);
 
-	@Autowired
-	private RefreshTokenRepository refreshTokenRepository;
-	
-	
-	public Long saveAccessToken(String accessToken) {
-		Long id = null;
-		return id;
-	}
-	
-	public Long saveAccessToken(String accessToken, Integer memberId, Date exp, Boolean isRevoked) {
-		AccessTokenEntity entity = AccessTokenEntity.builder()
-				.id(accessToken)
-				.memberId(memberId)
-				.expiredDate(exp)
-				.isRevoked(isRevoked)
-				.build();
-		
-		accessTokenRepository.save(entity);
-		Long id = null;
-		return id;
-	}
-	
-	public Long saveRefreshToken(String refreshToken, Date exp, Boolean isRevoked) {
-		RefreshTokenEntity entity = RefreshTokenEntity.builder()
-				.refreshTokenId(refreshToken)
-				.expiredDate(exp)
-				.isRevoked(isRevoked)
-				.build();
-		refreshTokenRepository.save(entity);
-		
-		Long id = null;
-		
-		return id;
-	}
+    public String refreshJwt(String jwt);
+
 }

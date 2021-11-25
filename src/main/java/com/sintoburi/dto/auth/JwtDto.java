@@ -1,4 +1,4 @@
-package com.sintoburi.model;
+package com.sintoburi.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,12 +6,14 @@ import lombok.Getter;
 /**
  * @author seongnamfc
  * @package com.sintoburi.model
- * @file Header
+ * @file Jwt
  * @description
  * @date 2021/11/14
  */
 @Getter
 @AllArgsConstructor
-public class TokenHeader {
-    private String typ;
+public class JwtDto {
+    private JwtHeaderDto header;
+    private JwtPayloadDto payload;
+    private String verifySignature;
 }

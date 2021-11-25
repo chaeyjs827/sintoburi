@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sintoburi.config.res.ApiResponse;
-import com.sintoburi.model.JwtToken;
+import com.sintoburi.dto.auth.JwtDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sintoburi.util.UtilJwt;
+import com.sintoburi.util.JwtAuth;
 
 import io.jsonwebtoken.Claims;
 
@@ -29,7 +29,7 @@ import io.jsonwebtoken.Claims;
 public class OAuthController {
 
 	@Autowired
-	private UtilJwt utilJwt;
+	private JwtAuth utilJwt;
 	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody
@@ -69,7 +69,7 @@ public class OAuthController {
 	public ResponseEntity oauthDecodeJwt(@RequestParam String jwt) {
 
 		// jwt 토큰 타입은 정형화된 형태가 아님.. 그래서 decode를 해줘야함
-		JwtToken jwtToken = utilJwt.decodeJwt(jwt);
+		JwtDto jwtToken = utilJwt.decodeJwt(jwt);
 
 		// access-token 유효성 검사
 		Boolean authenticateToken = utilJwt.authenticateByToken(jwtToken.getPayload().getAt());
@@ -90,5 +90,13 @@ public class OAuthController {
 	public Claims getClaimsByToken(@RequestParam String token) {
 		Claims result = utilJwt.tempGetClaimsByToken(token);
 		return result;
+	}
+
+	@GetMapping(value = "/oauth/test-token")
+	@ResponseBody
+//	@AuthRequired
+	public void getTestToken(@RequestParam String token) {
+		utilJwt.testAuthenticateByToken(token);
+		log.info("have a nice day :) ");
 	}
 }
