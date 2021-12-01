@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
+import com.sintoburi.service.impl.StRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class MemberController {
 	
 	@Autowired
 	private JwtAuth utilJwt;
+
+	@Autowired
+	private StRedisService stRedisService;
 	
 //	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
 //	public String memberSignUp(MemberDto memberDto) {
@@ -53,6 +57,7 @@ public class MemberController {
 	@ResponseBody
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
+		stRedisService.save("test", "haha", "hoho");
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
 	}

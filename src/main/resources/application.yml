@@ -1,6 +1,6 @@
 
 server:
-  port: 8080
+  port: 7577
   servlet:
     context-path: /
     encoding:
@@ -67,7 +67,7 @@ spring:
       host: localhost
       port: 6381
       database: 1
-      prefix: dev
+      prefix: st
   #redis
   redis:
     host: localhost
