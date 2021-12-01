@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
+import com.sintoburi.service.impl.LegacyRedisService;
 import com.sintoburi.service.impl.StRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,10 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api")
 public class MemberController {
 
-	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
 	private JwtAuth utilJwt;
-
-	@Autowired
 	private StRedisService stRedisService;
+	private LegacyRedisService legacyRedisService;
 	
 //	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
 //	public String memberSignUp(MemberDto memberDto) {
@@ -58,6 +55,7 @@ public class MemberController {
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
 		stRedisService.save("test", "haha", "hoho");
+		legacyRedisService.save("i", "have", "family");
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
 	}
