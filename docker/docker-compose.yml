@@ -11,7 +11,7 @@ services:
     volumes:
       - "./database/spring_social/:/var/lib/mysql"
     ports:
-      - "3306:3306"
+      - "3308:3306"
     container_name: st_mysql
 #    networks:
 #      - backend-network
@@ -21,4 +21,4 @@ services:
     image: redis:latest
     command: redis-server
     ports:
-      - "6379:6379"
+      - "6381:6379"
