@@ -28,7 +28,7 @@ public class MemberController {
 	private JwtAuth utilJwt;
 	private StRedisService stRedisService;
 	private LegacyRedisService legacyRedisService;
-	
+
 //	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
 //	public String memberSignUp(MemberDto memberDto) {
 	@PostMapping("/member/sign-up")
@@ -52,15 +52,12 @@ public class MemberController {
 		return null;
 	}
 
-	@Autowired
-	private TestDao testDao;
-
 	@GetMapping("/member/find-by-id")
 	@ResponseBody
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
 
-		MemberModel member = testDao.getTest();
+		MemberModel member = memberService.getTest();
 
 		stRedisService.save("test", "haha", "hoho");
 		legacyRedisService.save("i", "have", "family");

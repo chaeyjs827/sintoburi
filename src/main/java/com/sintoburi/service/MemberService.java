@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.sintoburi.dao.TestDao;
 import com.sintoburi.mapper.MemberMapper;
+import com.sintoburi.model.MemberModel;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,15 @@ public class MemberService {
 	private MemberRepository memberRepository;
 	
 	private UtilLogger utilLogger;
-	
+
+//	private TestDao testDao;
+
+	@Transactional
+	public MemberModel getTest() {
+		return null;
+//		return testDao.getTest();
+	}
+
 	@Transactional 
 	public Long memberSignup(MemberDto memberDto) {
 		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
