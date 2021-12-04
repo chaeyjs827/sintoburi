@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
+import com.sintoburi.dao.TestDao;
+import com.sintoburi.model.MemberModel;
 import com.sintoburi.service.impl.LegacyRedisService;
 import com.sintoburi.service.impl.StRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +51,17 @@ public class MemberController {
 		}
 		return null;
 	}
-	
+
+	@Autowired
+	private TestDao testDao;
+
 	@GetMapping("/member/find-by-id")
 	@ResponseBody
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
+
+		MemberModel member = testDao.getTest();
+
 		stRedisService.save("test", "haha", "hoho");
 		legacyRedisService.save("i", "have", "family");
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
