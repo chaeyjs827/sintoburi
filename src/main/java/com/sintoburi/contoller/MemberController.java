@@ -59,8 +59,8 @@ public class MemberController {
 
 		MemberModel member = memberService.getTest();
 
-		stRedisService.save("test", "haha", "hoho");
-		legacyRedisService.save("i", "have", "family");
+		stRedisService.save("green", "haha", "hoho");
+		legacyRedisService.save("sum41", "have", "family");
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
 	}
