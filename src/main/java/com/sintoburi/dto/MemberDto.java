@@ -2,6 +2,7 @@ package com.sintoburi.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sintoburi.entity.MemberEntity;
 
 import lombok.*;
@@ -11,6 +12,7 @@ import lombok.*;
 @Getter
 @Builder
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberDto {
     private Long id;
     private String username;
