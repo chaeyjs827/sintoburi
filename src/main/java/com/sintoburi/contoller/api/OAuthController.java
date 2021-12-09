@@ -1,4 +1,4 @@
-package com.sintoburi.contoller;
+package com.sintoburi.contoller.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sintoburi.util.JwtAuth;
+import com.sintoburi.util.UtilJwtAuth;
 
 import io.jsonwebtoken.Claims;
 
@@ -29,7 +29,7 @@ import io.jsonwebtoken.Claims;
 public class OAuthController {
 
 	@Autowired
-	private JwtAuth utilJwt;
+	private UtilJwtAuth utilJwt;
 	
 	@GetMapping(value = "/oauth/login")
     @ResponseBody

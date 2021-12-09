@@ -1,21 +1,19 @@
-package com.sintoburi.contoller;
+package com.sintoburi.contoller.api;
 
 import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
-import com.sintoburi.dao.TestDao;
 import com.sintoburi.model.MemberModel;
 import com.sintoburi.service.impl.LegacyRedisService;
 import com.sintoburi.service.impl.StRedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.service.MemberService;
-import com.sintoburi.util.JwtAuth;
+import com.sintoburi.util.UtilJwtAuth;
 
 import lombok.AllArgsConstructor;
 
@@ -25,7 +23,7 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 
 	private MemberService memberService;
-	private JwtAuth utilJwt;
+	private UtilJwtAuth utilJwt;
 	private StRedisService stRedisService;
 	private LegacyRedisService legacyRedisService;
 
