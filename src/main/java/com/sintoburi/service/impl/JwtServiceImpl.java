@@ -2,7 +2,7 @@ package com.sintoburi.service.impl;
 
 import com.sintoburi.dto.auth.JwtDto;
 import com.sintoburi.service.JwtService;
-import com.sintoburi.util.JwtAuth;
+import com.sintoburi.util.UtilJwtAuth;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import java.util.UUID;
 public class JwtServiceImpl implements JwtService {
 
     @Autowired
-    private JwtAuth jwtAuth;
+    private UtilJwtAuth utilJwtAuth;
 
     @Override
     public String getJwtFromRequest(HttpServletRequest request) {
@@ -58,7 +58,7 @@ public class JwtServiceImpl implements JwtService {
         String jerrySecretKey = "jerrygaoyanglaraveljwtlaraveljwt";
         String tempSecretyKey = "secret-key";
 
-        String[] chunks = jwtAuth.getJwtArray(jwt);
+        String[] chunks = utilJwtAuth.getJwtArray(jwt);
         String headerBase64 = chunks[0];
         String payloadBase64 = chunks[1];
         String signatureBase64 = chunks[2];
@@ -67,22 +67,22 @@ public class JwtServiceImpl implements JwtService {
         log.info("payloadBase64 : " + payloadBase64);
         log.info("signatureBase64 : " + signatureBase64);
 
-        String secretKeyBase64 = jwtAuth.encodeBase64(jerrySecretKey);
+        String secretKeyBase64 = utilJwtAuth.encodeBase64(jerrySecretKey);
         log.info("secret-key : " + jerrySecretKey);
         log.info("secretKeyBase64 : " + secretKeyBase64);
 
         String verifyString = headerBase64+"."+payloadBase64+"."+secretKeyBase64;
 
-        String payloadDecoded = jwtAuth.decodeBase64(payloadBase64);
+        String payloadDecoded = utilJwtAuth.decodeBase64(payloadBase64);
         log.info("payloadDecoded = " + payloadDecoded);
 
         log.info("[verifyString] : " + verifyString);
 
-        String signatureString = jwtAuth.decodeBase64(signatureBase64);
+        String signatureString = utilJwtAuth.decodeBase64(signatureBase64);
         log.info("[signatureString] : " + signatureString);
 
         if(BCrypt.checkpw(verifyString, signatureString)) {
-            JwtDto jwtDto = jwtAuth.decodeJwt(jwt);
+            JwtDto jwtDto = utilJwtAuth.decodeJwt(jwt);
             log.info("일치 합니다.");
             return jwtDto;
         } else {

@@ -1,6 +1,6 @@
 
 server:
-  port: 8080
+  port: 7577
   servlet:
     context-path: /
     encoding:
@@ -28,10 +28,13 @@ spring:
   
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test_db
+#    url: jdbc:mysql://localhost:3309/test_db
+    platform: mysql
+    jdbc-url: jdbc:mysql://localhost:3309/test_db
+#    jdbcUrl: jdbc:mysql://localhost:3309/test_db
     username: root
-    password: 
-  
+    password:
+
   # jpa
   jpa:
     hibernate:
@@ -63,10 +66,17 @@ spring:
           auth: true
           starttls:
             enable: true
+  redis-st:
+      host: localhost
+      port: 6381
+      database: 1
+      prefix: st
   #redis
-  redis:
+  redis-legacy:
     host: localhost
     port: 6379
+    database: 1
+    prefix: legacy
 #security:
 #  basic:
 #    enable : false

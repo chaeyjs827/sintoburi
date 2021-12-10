@@ -1,17 +1,19 @@
-package com.sintoburi.contoller;
+package com.sintoburi.contoller.api;
 
 import java.util.Optional;
 
 import com.sintoburi.auth.AuthRequired;
 import com.sintoburi.config.res.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sintoburi.model.MemberModel;
+import com.sintoburi.service.impl.LegacyRedisService;
+import com.sintoburi.service.impl.StRedisService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.service.MemberService;
-import com.sintoburi.util.JwtAuth;
+import com.sintoburi.util.UtilJwtAuth;
 
 import lombok.AllArgsConstructor;
 
@@ -20,12 +22,11 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api")
 public class MemberController {
 
-	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private JwtAuth utilJwt;
-	
+	private UtilJwtAuth utilJwt;
+	private StRedisService stRedisService;
+	private LegacyRedisService legacyRedisService;
+
 //	public String memberSignUp(@ModelAttribute MemberDto memberDto) {
 //	public String memberSignUp(MemberDto memberDto) {
 	@PostMapping("/member/sign-up")
@@ -48,11 +49,16 @@ public class MemberController {
 		}
 		return null;
 	}
-	
+
 	@GetMapping("/member/find-by-id")
 	@ResponseBody
 	@AuthRequired
 	public Optional<MemberEntity> getMemberById(@RequestParam String id) {
+
+		MemberModel member = memberService.getTest();
+
+		stRedisService.save("green", "haha", "hoho");
+		legacyRedisService.save("sum41", "have", "family");
 		Optional<MemberEntity> result = memberService.getMemberById(Long.parseLong(id));
 		return result;
 	}

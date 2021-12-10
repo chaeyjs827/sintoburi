@@ -1,5 +1,8 @@
 package com.sintoburi.model;
 
-public class MemberModel {
+import lombok.Data;
 
+@Data
+public class MemberModel {
+    String email;
 }

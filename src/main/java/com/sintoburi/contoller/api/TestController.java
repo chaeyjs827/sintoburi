@@ -1,4 +1,4 @@
-package com.sintoburi.contoller;
+package com.sintoburi.contoller.api;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;

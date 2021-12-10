@@ -1,4 +1,4 @@
-package com.sintoburi.contoller;
+package com.sintoburi.contoller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

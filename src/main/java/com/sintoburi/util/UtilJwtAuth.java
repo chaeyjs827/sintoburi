@@ -60,7 +60,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @Slf4j
-public class JwtAuth extends JwtConfig {
+public class UtilJwtAuth extends JwtConfig {
 
 	// 30( 1000 * 60초 * 30분) = 30분
 	private long ACCESS_TOKEN_EXP = 1000 * 60l * 30l;
