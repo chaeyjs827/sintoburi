@@ -1,4 +1,4 @@
-package com.sintoburi.module;
+package com.sintoburi.module.base;
 
 import com.sintoburi.dto.ApiResponseDto;
 import lombok.extern.slf4j.Slf4j;
