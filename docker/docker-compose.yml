@@ -1,24 +1,23 @@
-version: "3"
+version: "3.7"
 
-services: 
-  database:
+services:
+  st_mysql:
+    container_name: st_mysql
     image: mysql:5.7
     environment:
-      MYSQL_USER: test_user
-      MYSQL_DATABASE: test_db
-      MYSQL_PASSWORD: test_pw
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
     volumes:
       - "./database/spring_social/:/var/lib/mysql"
     ports:
-      - "3308:3306"
-    container_name: st_mysql
-#    networks:
-#      - backend-network
+      - "${HOST_MYSQL_PORT}:${CONTAINER_MYSQL_PORT}"
 
   redis:
     container_name: st_redis
     image: redis:latest
     command: redis-server
     ports:
-      - "6381:6379"
+      - "${HOST_REDIS_PORT}:${CONTAINER_REDIS_PORT}"
+
