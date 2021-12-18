@@ -9,8 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sintoburi.dto.auth.JwtDto;
 import com.sintoburi.dto.auth.JwtHeaderDto;
@@ -27,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
 import com.sintoburi.service.TempJwtService;
-import com.sitoburi.constant.JwtConst;
+import com.sintoburi.constant.JwtConst;
 import org.springframework.web.client.RestTemplate;
 
 /*

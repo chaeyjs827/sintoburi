@@ -1,4 +1,4 @@
-package com.sitoburi.constant;
+package com.sintoburi.constant;
 
 public enum UserAuthorityConst {
 
