@@ -1,4 +1,4 @@
-package com.sintoburi.customer.mapper;
+package com.sintoburi.member.mapper;
 
 /**
  * @author seongnamfc

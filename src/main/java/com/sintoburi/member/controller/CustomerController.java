@@ -1,4 +1,4 @@
-package com.sintoburi.customer.controller;
+package com.sintoburi.member.controller;
 
 /**
  * @author seongnamfc

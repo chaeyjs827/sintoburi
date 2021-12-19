@@ -1,4 +1,4 @@
-package com.sintoburi.customer.dao;
+package com.sintoburi.member.dao;
 
 /**
  * @author seongnamfc
