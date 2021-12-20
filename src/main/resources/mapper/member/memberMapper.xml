@@ -3,7 +3,7 @@
 
 
 <mapper namespace="com.sintoburi.member.dao.MemberDao">
-    <select id="getTest" resultType="MemberModel">
+    <select id="getMemberById" resultType="MemberEntity">
 
         select *
         from member

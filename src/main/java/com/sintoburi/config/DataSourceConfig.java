@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class DataSourceConfig {
 
-    private final String MAPPER_LOCATION = "classpath:mapper/*.xml";
+    private final String MAPPER_LOCATION = "classpath:mapper/*/*.xml";
     private final String ALIASES_PACKAGE = "com.sintoburi.*";
 
     @Bean

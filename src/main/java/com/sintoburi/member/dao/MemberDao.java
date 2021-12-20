@@ -1,5 +1,7 @@
 package com.sintoburi.member.dao;
 
+import com.sintoburi.member.entity.MemberEntity;
+
 /**
  * @author seongnamfc
  * @package com.sintoburi.customer.dao
@@ -7,5 +9,8 @@ package com.sintoburi.member.dao;
  * @description
  * @date 2021/12/18
  */
-public class MemberDao {
+public interface MemberDao {
+
+    MemberEntity getMemberById(Long id);
+
 }

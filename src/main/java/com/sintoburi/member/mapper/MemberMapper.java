@@ -1,4 +1,4 @@
-package com.sintoburi.mapper;
+package com.sintoburi.member.mapper;
 
 import com.sintoburi.common.mapper.BaseMapper;
 import com.sintoburi.dto.MemberDto;
