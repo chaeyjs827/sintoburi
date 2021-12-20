@@ -7,5 +7,5 @@ package com.sintoburi.member.dao;
  * @description
  * @date 2021/12/18
  */
-public class CustomerDao {
+public class MemberDao {
 }

@@ -7,5 +7,5 @@ package com.sintoburi.member.controller;
  * @description
  * @date 2021/12/18
  */
-public class CustomerController {
+public class MemberController {
 }
