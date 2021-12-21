@@ -1,5 +1,7 @@
 package com.sintoburi.member.service;
 
+import com.sintoburi.member.dao.MemberDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,13 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @description
  * @date 2021/12/18
  */
-@RestController
-@RequestMapping(value = "/customer")
-public class CustomerService {
 
-    @GetMapping(value = "/test")
+public class MemberService {
+
+    @Autowired
+    private MemberDao memberDao;
+
     public String test() {
-        return "hi";
+//        memberDao.getMemberById();
+        return "test";
     }
 
 }
