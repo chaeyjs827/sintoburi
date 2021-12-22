@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
-public class MemberController {
+public class TempMemberController {
 
 	private MemberService memberService;
 	private UtilJwtAuth utilJwt;
