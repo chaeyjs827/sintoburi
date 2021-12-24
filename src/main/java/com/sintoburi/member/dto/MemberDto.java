@@ -1,8 +1,11 @@
 package com.sintoburi.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sintoburi.member.validation.MemberValidation;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author seongnamfc
@@ -16,6 +19,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberDto {
     private Long id;
+    @NotNull(message = "회원 번호를 입력 해주세요.", groups = {MemberValidation.GetMember.class})
     private String memberId;
     private String memberStatusCode;
     private String password;

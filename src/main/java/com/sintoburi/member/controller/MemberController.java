@@ -1,7 +1,10 @@
 package com.sintoburi.member.controller;
 
+import com.sintoburi.member.dto.MemberDto;
 import com.sintoburi.member.service.MemberService;
+import com.sintoburi.member.validation.MemberValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +24,7 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping(value = "/test")
-    public String test() {
+    public String test(@Validated(MemberValidation.GetMemberList.class) MemberDto memberDto) {
         return memberService.test();
     }
 }
