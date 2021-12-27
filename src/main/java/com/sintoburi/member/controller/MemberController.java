@@ -27,4 +27,10 @@ public class MemberController {
     public String test(@Validated(MemberValidation.GetMemberList.class) MemberDto memberDto) {
         return memberService.test();
     }
+
+//    @GetMapping(value = "/test")
+//    @Validated(MemberValidation.GetMemberList.class)
+//    public String test(MemberDto memberDto) {
+//        return memberService.test();
+//    }
 }
