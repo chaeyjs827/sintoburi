@@ -1,6 +1,6 @@
 package com.sintoburi.member.controller;
 
-import com.sintoburi.member.dto.MemberDto;
+import com.sintoburi.member.dto.TodoMemberDto;
 import com.sintoburi.member.service.MemberService;
 import com.sintoburi.member.validation.MemberValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping(value = "/test")
-    public String test(@Validated(MemberValidation.GetMemberList.class) MemberDto memberDto) {
+    public String test(@Validated(MemberValidation.GetMemberList.class) TodoMemberDto todoMemberDto) {
         return memberService.test();
     }
 
