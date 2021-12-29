@@ -15,7 +15,7 @@ public class MemberMapperTest {
 				.password("password")
 				.build();
 
-		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
+		MemberEntity memberEntity = TempMemberMapper.INSTANCE.dtoToEntity(memberDto);
 
 		System.out.println("===== 테스트 종료 =====");
 

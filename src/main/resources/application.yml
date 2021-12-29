@@ -30,10 +30,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3309/test_db
     platform: mysql
-    jdbc-url: jdbc:mysql://localhost:3309/test_db
+    jdbc-url: jdbc:mysql://localhost:3307/dev_st_db?characterEncoding=UTF-8
 #    jdbcUrl: jdbc:mysql://localhost:3309/test_db
     username: root
-    password:
+    password: root
 
   # jpa
   jpa:

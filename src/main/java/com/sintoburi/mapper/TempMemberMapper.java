@@ -9,9 +9,9 @@ import org.mapstruct.factory.Mappers;
 
 //@Mapper(componentModel = "spring")
 @Mapper
-public interface MemberMapper extends BaseMapper<MemberDto, MemberEntity> {
+public interface TempMemberMapper extends BaseMapper<MemberDto, MemberEntity> {
 	
-	MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
+	TempMemberMapper INSTANCE = Mappers.getMapper(TempMemberMapper.class);
 
 	@Mapping(target = "id", constant = "0L")
 	MemberEntity dtoToEntity(MemberDto memberDto);
