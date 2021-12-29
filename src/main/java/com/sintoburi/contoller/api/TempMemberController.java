@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
-import com.sintoburi.service.MemberService;
+import com.sintoburi.service.TempMemberService;
 import com.sintoburi.util.UtilJwtAuth;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api")
 public class TempMemberController {
 
-	private MemberService memberService;
+	private TempMemberService memberService;
 	private UtilJwtAuth utilJwt;
 	private StRedisService stRedisService;
 	private LegacyRedisService legacyRedisService;

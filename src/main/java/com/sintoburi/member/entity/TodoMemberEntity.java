@@ -1,25 +1,17 @@
-package com.sintoburi.member.dto;
+package com.sintoburi.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sintoburi.member.validation.MemberValidation;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * @author seongnamfc
- * @package com.sintoburi.customer.dto
- * @file CustomerDto
+ * @package com.sintoburi.customer.entity
+ * @file CustomerEntity
  * @description
  * @date 2021/12/18
  */
-@Getter
-@Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class MemberDto {
+@Data
+public class TodoMemberEntity {
     private Long id;
-    @NotNull(message = "회원 번호를 입력 해주세요.", groups = {MemberValidation.GetMember.class})
     private String memberId;
     private String memberStatusCode;
     private String password;

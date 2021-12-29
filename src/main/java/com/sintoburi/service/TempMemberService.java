@@ -5,8 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.sintoburi.dao.TestDao;
-import com.sintoburi.mapper.MemberMapper;
+import com.sintoburi.mapper.TempMemberMapper;
 import com.sintoburi.model.MemberModel;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +21,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class MemberService {
+public class TempMemberService {
 
 	private MemberRepository memberRepository;
 	
@@ -38,7 +37,7 @@ public class MemberService {
 
 	@Transactional 
 	public Long memberSignup(MemberDto memberDto) {
-		MemberEntity memberEntity = MemberMapper.INSTANCE.dtoToEntity(memberDto);
+		MemberEntity memberEntity = TempMemberMapper.INSTANCE.dtoToEntity(memberDto);
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberEntity.setPassword(passwordEncoder.encode(memberDto.getPassword()));
