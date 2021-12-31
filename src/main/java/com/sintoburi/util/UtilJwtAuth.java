@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sintoburi.config.JwtConfig;
 import com.sintoburi.service.TempJwtService;
-import com.sintoburi.constant.JwtConst;
 import org.springframework.web.client.RestTemplate;
 
 /*
@@ -83,8 +82,8 @@ public class UtilJwtAuth extends JwtConfig {
 	@Transactional
 	public String createJwtToken(String username) {
 
-		String at = createToken(JwtConst.ACCESS_TOKEN.getShortName(), ACCESS_TOKEN_EXP);	// access-token
-		String rt = createToken(JwtConst.REFRESH_TOKEN.getShortName(), REFRESH_TOKEN_EXP);	// refresh-token
+		String at = createToken("at", ACCESS_TOKEN_EXP);	// access-token
+		String rt = createToken("rt", REFRESH_TOKEN_EXP);	// refresh-token
 
 		log.debug("create jwt token");
 
@@ -113,8 +112,8 @@ public class UtilJwtAuth extends JwtConfig {
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", "jwt")
 				.claim("username", username)
-				.claim(JwtConst.ACCESS_TOKEN.getShortName(), at)
-				.claim(JwtConst.ACCESS_TOKEN.getShortName(), rt)
+				.claim("at", at)
+				.claim("rt", rt)
 				.setIssuedAt(issuedAt)	// 토큰 발행 시간
 				.setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미
 				.setExpiration(new Date(now+(ACCESS_TOKEN_EXP)))		// 토큰 만료시간

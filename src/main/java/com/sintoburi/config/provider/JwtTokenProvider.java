@@ -1,6 +1,5 @@
 package com.sintoburi.config.provider;
 
-import com.sintoburi.constant.JwtConst;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -54,14 +53,15 @@ public class JwtTokenProvider {
 
     //Jwt 토큰 생성
     public String createToken(String username, List<String> roles, PrivateKey key) {
+
         long now = System.currentTimeMillis();
         Date issuedAt = new Date();
 
         String jwt = Jwts.builder()
                 .setHeaderParam("type", "JWT")
                 .claim("username", username)
-                .claim(JwtConst.ACCESS_TOKEN.getShortName(), "at")
-                .claim(JwtConst.ACCESS_TOKEN.getShortName(), "rt")
+                .claim("at", "at")
+                .claim("rt", "rt")
                 .setIssuedAt(issuedAt)	// 토큰 발행 시간
                 .setNotBefore(issuedAt)	// 지정된 시간 이전에는 토큰을 처리하지 않아야 함을 의미
                 .setExpiration(new Date(now+(ACCESS_TOKEN_EXP)))		// 토큰 만료시간
