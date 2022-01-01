@@ -1,23 +1,16 @@
-package com.sintoburi.member.dto;
+package com.sintoburi.member;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sintoburi.member.validation.MemberValidation;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * @author seongnamfc
- * @package com.sintoburi.customer.dto
- * @file CustomerDto
+ * @package com.sintoburi.member
+ * @file TodoMemberModel
  * @description
- * @date 2021/12/18
+ * @date 2022/01/01
  */
-@Getter
-@Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class TodoMemberDto {
+@Data
+public class TodoMemberModel {
     private Long id;
     private String memberLoginId;
     private String memberStatusCode;
