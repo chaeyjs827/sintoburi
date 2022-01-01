@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sintoburi.dto.ApiReqResLogDto;
+import com.sintoburi.common.dto.ApiReqResLogDto;
 import com.sintoburi.service.ApiHttpExampleService;
 import com.sintoburi.util.UtilLogger;
 import com.sintoburi.util.UtilRsaKey;

@@ -11,7 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.sintoburi.dto.ApiReqResLogDto;
+import com.sintoburi.common.dto.ApiReqResLogDto;
 import com.sintoburi.dto.MemberDto;
 import com.sintoburi.entity.MemberEntity;
 import com.sintoburi.repository.MemberRepository;

@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import com.sintoburi.dto.ApiReqResLogDto;
+import com.sintoburi.common.dto.ApiReqResLogDto;
 import com.sintoburi.repository.ApiReqResLogRepository;
 
 import lombok.AllArgsConstructor;

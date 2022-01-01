@@ -1,7 +1,6 @@
-package com.sintoburi.dto;
+package com.sintoburi.common.dto;
 
 import com.sintoburi.entity.ApiReqResLogEntity;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,8 +34,8 @@ public class ApiReqResLogDto {
 	
 	@Builder
 	public ApiReqResLogDto(Long id, String apiName, String apiMethodName, String requestType,
-						String requestUrl, String requestBody, String responseResult,
-						String responseCode) {
+                           String requestUrl, String requestBody, String responseResult,
+                           String responseCode) {
 		this.id = id;
 		this.apiMethodName = apiMethodName;
 		this.apiName = apiName;
